@@ -6,8 +6,8 @@ namespace KiwiTactics.Unit
         public int MaxHealth { get; private set; }
         public int MaxMovement { get; private set; }
         public int Movement { get; private set; }
-        public int Attack { get; private set; }
-        public int Defense { get; private set; }
+        public int PhyAttack { get; private set; }
+        public int PhyDefense { get; private set; }
         public int MagicAttack { get; private set; }
         public int MagicDefense { get; private set; }
         public int Speed { get; private set; }
@@ -22,8 +22,9 @@ namespace KiwiTactics.Unit
         public int EarthResistance { get; private set; }
         public int WindResistance { get; private set; }
 
-        public List<Attritube> Attributes { get; private set; }
-        public List<Status> Statuses { get; private set; }
+        public bool actioned;   // 地图指令是否已执行
+        public List<Attributes.Attribute> Attributes { get; private set; }
+        public List<Attributes.Status> Statuses { get; private set; }
 
         public void OnTurnStart()
         {
@@ -37,13 +38,10 @@ namespace KiwiTactics.Unit
         {
             Movement -= distance;
         }
-        public void Attack(Unit target)
-        {
-            target.Health -= Attack;
-        }
+
         public void OnAttacked(Unit attacker)
         {
-            Health -= attacker.Attack;
+            Health -= attacker.PhyAttack;
         }
     }
 }
