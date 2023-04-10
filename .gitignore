@@ -1,5 +1,16 @@
 .vs
 .git
+bin
+obj
+.user
+.suo
+*/bin
+*/obj/
+KiwiConfig/obj
+KiwiGrpcClient/obj
+KiwiGrpcServer/obj
+KiwiTactics/obj
+KiwiTurnBased/obj
 launchSettings.json
 appsettings.json
 appsettings.Development.json
