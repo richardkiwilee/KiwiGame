@@ -1,0 +1,7 @@
+.vs
+.git
+bin
+obj
+launchSettings.json
+appsettings.json
+appsettings.Development.json
