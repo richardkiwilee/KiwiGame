@@ -1,7 +1,7 @@
 .vs
 .git
 */bin
-*/obj
+*/obj/
 launchSettings.json
 appsettings.json
 appsettings.Development.json
