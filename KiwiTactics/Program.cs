@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiwiTactics.Attributes
+namespace KiwiTactics
 {
-    internal class Status
+    class Program
     {
+        static void Main(string[] args)
+        {
+
+        }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiwiTactics.Attributes
+namespace KiwiTactics.QuadMap
 {
-    internal class Attribute
+    public class QuadCell
     {
     }
 }
