@@ -10,7 +10,7 @@ namespace KiwiTactics.Manager
 {
     public class GlobalResourceManager
     {
-        private DynamicEnum<Numeric> resources = DynamicEnum<Numeric>.Instance;
+        private DynamicEnum<ResourceNumeric> resources = DynamicEnum<ResourceNumeric>.Instance;
         private GlobalResourceManager() { }
         private static GlobalResourceManager instance;
         public static GlobalResourceManager Instance
@@ -32,7 +32,7 @@ namespace KiwiTactics.Manager
                 cls.Value += cls.Valuechg;
             }
         }
-        public Numeric Get(string resourceName)
+        public ResourceNumeric Get(string resourceName)
         {
             return resources[resourceName];
         }
