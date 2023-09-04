@@ -88,8 +88,36 @@ namespace KiwiTactics.Base
         WrongCamp = 5,  // 目标阵营错误
         WrongCellType = 6   // 目标地格类型错误
     }
-
-
+    public enum DirectionEnum
+    {
+        N = 1,
+        E = 2,
+        W = 3,
+        S = 4
+    }
+    public class Direction
+    {
+        DirectionEnum direction;
+        public Direction()
+        {
+            this.direction = DirectionEnum.W;
+        }
+        public Direction(DirectionEnum direction)
+        {
+            this.direction = direction;
+        }
+        public void Reverse()
+        { 
+            if (this.direction == DirectionEnum.N) { this.direction = DirectionEnum.W; }
+            if (this.direction == DirectionEnum.W) { this.direction = DirectionEnum.N; }
+            if (this.direction == DirectionEnum.S) { this.direction = DirectionEnum.E; }
+            if (this.direction == DirectionEnum.E) { this.direction = DirectionEnum.S; }
+        }
+        public bool Equals(Direction other)
+        { 
+            return this.direction == other.direction;
+        }
+    }
     // unit
     public enum UnitAttr
     {

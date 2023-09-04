@@ -21,31 +21,29 @@ namespace KiwiTactics.Base
     }
     public class ResourceNumeric
     {
-        private int value;
-        private int valuechg = 0;
-        private List<ResourceNumericStructure> source;
-        public ResourceNumeric(int _value) { value = _value; }
-        public int Value { get => value; set => this.value = value; }
-        public int Valuechg { get => valuechg; set => valuechg = value; }
-        public void Add(int value) { this.value += value; }
+        private int _value;
+        private int _changePerTurn = 0;
+        private List<ResourceNumericStructure> buffs;
+        public ResourceNumeric(int _value) { this._value = _value; buffs = new List<ResourceNumericStructure>(); }
+        public int Value { get => _value; set => this._value = value; }
+        public int Valuechg { get => _changePerTurn; set => _changePerTurn = value; }
+        public void Add(int value) { this._value += value; }
         public void AddResourcePerTurn(ResourceNumericStructure s)
         {
-            source.Add(s);
+            buffs.Add(s);
             Refresh();
         }
         private void Refresh()
         {
-            source.Sort();
-            int chg = 0;
-            foreach (var s in source)
+            _changePerTurn = 0;
+            foreach (var s in buffs)
             {
-                chg += s.value;
+                _changePerTurn += s.value;
             }
-            valuechg = chg;
         }
         public void RemoveResourcePerTurn(ResourceNumericStructure s)
         {
-            source.Remove(s);
+            buffs.Remove(s);
             Refresh();
         }
 

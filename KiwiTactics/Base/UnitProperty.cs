@@ -25,32 +25,97 @@ namespace KiwiTactics.Base
     }
     public class UnitProperty
     {
-        private int value;
-        private int valuechg = 0;
-        private List<UnitPropertyStructure> source;
-        public UnitProperty(int _value) { value = _value; }
-        public int Value { get => value; set => this.value = value; }
-        public int Valuechg { get => valuechg; set => valuechg = value; }
-        public void Add(int value) { this.value += value; }
-        public void AddResourcePerTurn(UnitPropertyStructure s)
+        private int _value;
+        private int _adj = 0;
+        public List<UnitPropertyStructure> buffs;
+        public UnitProperty(int v) 
         {
-            source.Add(s);
-            Refresh();
+            _value = v; 
+            buffs = new List<UnitPropertyStructure>(); 
+        }
+        public int Value { get => _value + _adj;}
+        private void Refresh()
+        {
+            _adj = 0;
+            foreach (var s in buffs)
+            {
+                _adj += s.value;
+            }
+        }
+    }
+    public class UnitContainerProperty
+    {
+        private int _currValue;
+        private int _maxValue;
+        private int _adj = 0;
+        public List<UnitPropertyStructure> buffs;
+        public int MaxValue
+        {
+            get { return _maxValue+_adj; }
+            set
+            {
+                if (value < 0) // 如果试图设置的MaxValue小于0，可以抛出异常或设置为0
+                {
+                    throw new ArgumentOutOfRangeException("MaxValue cannot be less than 0");
+                }
+                _maxValue = value;
+                if (_currValue > _maxValue) // 确保currValue不会超过新设置的MaxValue
+                {
+                    _currValue = _maxValue;
+                }
+            }
+        }
+        public int CurrValue
+        {
+            get { return _currValue; }
+            set
+            {
+                if (value > _maxValue)
+                {
+                    _currValue = _maxValue;
+                }
+                else if (value < 0)
+                {
+                    _currValue = 0;
+                }
+                else
+                {
+                    _currValue = value;
+                }
+            }
+        }
+
+        public UnitContainerProperty(int maxValue)
+        {
+            if (maxValue < 0)
+            {
+                throw new ArgumentOutOfRangeException("MaxValue cannot be less than 0");
+            }
+            _maxValue = maxValue;
+            _currValue = _maxValue; 
+            _adj = 0;
+            buffs = new List<UnitPropertyStructure>();
         }
         private void Refresh()
         {
-            source.Sort();
-            int chg = 0;
-            foreach (var s in source)
+            _adj = 0;
+            foreach (var s in buffs)
             {
-                chg += s.value;
+                _adj += s.value;
             }
-            valuechg = chg;
         }
-        public void RemoveResourcePerTurn(UnitPropertyStructure s)
+        public void Add(int value)
         {
-            source.Remove(s);
-            Refresh();
+            this.CurrValue += value;
+        }
+        public void Subtract(int value)
+        {
+            this.CurrValue -= value;
+        }
+        public void Recover()
+        { 
+           this.CurrValue = this.MaxValue;
         }
     }
+
 }

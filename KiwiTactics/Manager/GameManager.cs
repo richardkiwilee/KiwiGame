@@ -11,7 +11,18 @@ namespace KiwiTactics.Manager
     {
         public GameManager() { }
         public List<Unit> playerUnits = new List<Unit>();
-
+        private static GameManager? instance;
+        public static GameManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameManager();
+                }
+                return instance;
+            }
+        }
         public void LoadMap(string mapName) { }
         public void StartGame() { }
         public void OnPlayerTurnStart()

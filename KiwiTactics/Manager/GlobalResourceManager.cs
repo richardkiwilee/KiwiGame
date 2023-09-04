@@ -12,7 +12,7 @@ namespace KiwiTactics.Manager
     {
         private DynamicEnum<ResourceNumeric> resources = DynamicEnum<ResourceNumeric>.Instance;
         private GlobalResourceManager() { }
-        private static GlobalResourceManager instance;
+        private static GlobalResourceManager? instance;
         public static GlobalResourceManager Instance
         {
             get
