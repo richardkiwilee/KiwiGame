@@ -21,6 +21,30 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Consumable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductionResource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

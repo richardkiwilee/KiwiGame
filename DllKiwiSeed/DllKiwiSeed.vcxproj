@@ -139,8 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Building.h" />
+    <ClInclude Include="Consumable.h" />
+    <ClInclude Include="Equipment.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ProductionResource.h" />
+    <ClInclude Include="QuadMap.h" />
+    <ClInclude Include="Skill.h" />
+    <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
