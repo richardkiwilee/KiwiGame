@@ -6,6 +6,10 @@ set(PYTHON_LIB_DIR "D:/Python36/libs")
 set(PYTHON_INCLUDE_DIR "D:/Python36/include")
 set(PYBIND11_INCLUDE_DIR "D:/Python36/Lib/site-packages/pybind11/include")
 
+# 启用 C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_compile_options("/Zi")
 add_link_options("/DEBUG:FULL")
 
