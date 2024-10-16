@@ -19,10 +19,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTOPRY ${CMAKE_BINARY_DIR}/lib)
 set(rc_flags "/I 0x809")
 set(CMAKE_RC_FLAGS ${rc_flags})
 
-#include_directories(include)
-#include_directories(src)
-
-#link_libraries(${KIWITACTICS})
-
 add_subdirectory(KiwiTactics)
 add_subdirectory(Demo)

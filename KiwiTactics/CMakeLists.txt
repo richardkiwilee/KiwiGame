@@ -16,8 +16,12 @@ source_group(TREE ${CMAKE_SOURCE_DIR}/${PNAME} FILES ${SRC_FILES})
 include_directories(${PYTHON_INCLUDE_DIR})
 include_directories(${PYBIND11_INCLUDE_DIR})
 
+include_directories(${PYBIND11_INCLUDE_DIR})
+
 # 链接 Python 库目录
 link_directories(${PYTHON_LIB_DIR})
+
+link_directories(${CMAKE_SOURCE_DIR}/spdlog)
 
 # 创建可执行文件目标
 add_executable(${PNAME} ${SRC_FILES})
