@@ -5,6 +5,7 @@ file(GLOB_RECURSE SRC_FILES
     main.cpp
     game/*.*
     data/*.*
+    endian/*.*
     extern/*.*
     plugin/*.*
 )

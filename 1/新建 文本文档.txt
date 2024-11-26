@@ -1,0 +1,142 @@
+// Unit.h (单位类)
+class Unit {
+public:
+    Unit(const std::string& name, int health)
+        : name(name), health(health) {}
+
+    void TakeDamage(int amount) {
+        health -= amount;
+        if (health < 0) health = 0;
+    }
+
+    int GetHealth() const {
+        return health;
+    }
+
+private:
+    std::string name;
+    int health;
+};
+
+// Map.h (地图类)
+class Map {
+public:
+    void AddUnit(Unit* unit) {
+        units.push_back(unit);
+    }
+
+    void Update() {
+        // 更新地图状态（如单位位置、资源、等）
+    }
+
+private:
+    std::vector<Unit*> units;
+};
+
+// 游戏核心逻辑类（包含暴露给 Lua 或 Python 的接口）
+class GameEngine {
+public:
+    GameEngine() {
+        map = new Map();
+    }
+
+    void AddUnitToMap(Unit* unit) {
+        map->AddUnit(unit);
+    }
+
+    void CastSpell(const std::string& spellName, Unit* target) {
+        if (spellName == "Fireball") {
+            // 施放火球术
+            target->TakeDamage(30);
+        }
+    }
+
+    Map* GetMap() {
+        return map;
+    }
+
+private:
+    Map* map;
+};
+
+
+
+
+
+
+#include <pybind11/pybind11.h>
+#include "Unit.h"
+#include "Map.h"
+
+namespace py = pybind11;
+
+PYBIND11_MODULE(game, m) {
+    py::class_<Unit>(m, "Unit")
+        .def(py::init<const std::string&, int>())
+        .def("TakeDamage", &Unit::TakeDamage)
+        .def("GetHealth", &Unit::GetHealth);
+
+    py::class_<GameEngine>(m, "GameEngine")
+        .def(py::init<>())
+        .def("AddUnitToMap", &GameEngine::AddUnitToMap)
+        .def("CastSpell", &GameEngine::CastSpell)
+        .def("GetMap", &GameEngine::GetMap);
+}
+
+
+
+
+
+
+
+import game
+
+# 创建一个单位和游戏引擎实例
+unit = game.Unit("Hero", 100)
+engine = game.GameEngine()
+
+# 将单位添加到地图
+engine.AddUnitToMap(unit)
+
+# 施放火球术
+engine.CastSpell("Fireball", unit)
+
+# 打印单位的血量
+print(unit.GetHealth())
+
+
+
+
+
+
+using System;
+using System.Runtime.InteropServices;
+
+public class GameController {
+    // 导入 C++ 共享库
+    [DllImport("game.dll")]
+    public static extern void CastFireball(int unitId);
+
+    // 动画播放函数
+    public void PlayFireballAnimation() {
+        // 播放火球术动画
+        Console.WriteLine("Playing fireball animation...");
+    }
+
+    // 显示单位状态
+    public void ShowUnitHealth(int health) {
+        Console.WriteLine($"Unit Health: {health}");
+    }
+
+    public void PerformAction(int unitId) {
+        // 调用 C++ 接口施放火球术
+        CastFireball(unitId);
+        
+        // 播放动画
+        PlayFireballAnimation();
+        
+        // 更新界面显示
+        ShowUnitHealth(50);  // 假设火球术后血量为50
+    }
+}
+

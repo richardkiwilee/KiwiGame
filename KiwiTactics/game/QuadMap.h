@@ -6,129 +6,132 @@
 #include <stdexcept>
 #include <string>
 
-// 定义结构体 map grid，包含一些可空的成员。
-struct MapGrid {
-    std::optional<int> id;
-    std::optional<std::string> name;
-    std::optional<double> value;
+// 地格
+struct QuadGrid {
+    uint8_t height = 0x00;         // 不处理类似拱门的空洞结构，只考虑地面高度
+    uint8_t terrain = 0x00;        // 地形类型
+    uint8_t effect = 0x00;         // 地格效果 类似燃烧 浓雾等 不能共存
+    uint64_t objectid = 0x00;      // 占用对象 包括建筑方块、单位、资源等
 
-    // 重载流运算符以支持序列化和反序列化
-    friend std::ostream& operator<<(std::ostream& os, const MapGrid& grid) {
-        os << (grid.id ? std::to_string(*grid.id) : "null") << " "
-           << (grid.name ? *grid.name : "null") << " "
-           << (grid.value ? std::to_string(*grid.value) : "null");
+    // 序列化: 将 QuadGrid 对象的字段写入文件
+    void Serialize(std::ofstream& ofs) const {
+        ofs.write(reinterpret_cast<const char*>(&height), sizeof(height));
+        ofs.write(reinterpret_cast<const char*>(&terrain), sizeof(terrain));
+        ofs.write(reinterpret_cast<const char*>(&effect), sizeof(effect));
+        ofs.write(reinterpret_cast<const char*>(&objectid), sizeof(objectid));
+    }
+
+    // 反序列化: 从文件读取数据并恢复 QuadGrid 对象的字段
+    void Deserialize(std::ifstream& ifs) {
+        ifs.read(reinterpret_cast<char*>(&height), sizeof(height));
+        ifs.read(reinterpret_cast<char*>(&terrain), sizeof(terrain));
+        ifs.read(reinterpret_cast<char*>(&effect), sizeof(effect));
+        ifs.read(reinterpret_cast<char*>(&objectid), sizeof(objectid));
+    }
+
+    // 重载输出流运算符以支持序列化输出
+    friend std::ostream& operator<<(std::ostream& os, const QuadGrid& grid) {
+        os << "Height: " << +grid.height << ", "
+            << "Terrain: " << +grid.terrain << ", "
+            << "Effect: " << +grid.effect << ", "
+            << "ObjectID: " << grid.objectid;
         return os;
     }
 
-    friend std::istream& operator>>(std::istream& is, MapGrid& grid) {
-        std::string idStr, nameStr, valueStr;
-        is >> idStr >> nameStr >> valueStr;
-
-        grid.id = (idStr != "null") ? std::stoi(idStr) : std::optional<int>{};
-        grid.name = (nameStr != "null") ? nameStr : std::optional<std::string>{};
-        grid.value = (valueStr != "null") ? std::stod(valueStr) : std::optional<double>{};
+    // 重载输入流运算符以支持反序列化输入
+    friend std::istream& operator>>(std::istream& is, QuadGrid& grid) {
+        is >> grid.height >> grid.terrain >> grid.effect >> grid.objectid;
         return is;
     }
 };
 
-// 单例 Map 类
-class Map {
-private:
-    std::vector<std::vector<std::vector<MapGrid>>> grid;
-    static std::unique_ptr<Map> instance;
-
-    // 私有构造函数，禁止直接创建对象
-    Map() = default;
-
+class QuadGridMap {
 public:
-    // 禁止拷贝构造和赋值操作
-    Map(const Map&) = delete;
-    Map& operator=(const Map&) = delete;
+    uint8_t version = 1;        // 地图版本
+    uint8_t row = 0;            // 地图的行数 (高度)
+    uint8_t col = 0;            // 地图的列数 (宽度)
+    std::vector<std::vector<QuadGrid>> gridMap;  // 组成地图的二维网格
 
-    // 获取单例实例的方法
-    static Map& getInstance() {
-        if (!instance) {
-            instance.reset(new Map());
-        }
-        return *instance;
+    QuadGridMap(uint8_t version, uint8_t row, uint8_t col)
+        : version(version), row(row), col(col) {
+        gridMap.resize(row, std::vector<QuadGrid>(col));  // 行数为 row，列数为 col
     }
 
-    // 初始化三维数组
-    void init(int x, int y, int z) {
-        grid.resize(x, std::vector<std::vector<MapGrid>>(y, std::vector<MapGrid>(z)));
+    // 获取指定位置的 QuadGrid 指针
+    QuadGrid* Get(uint8_t x, uint8_t y)
+    {
+        if (x >= col || y >= row)  // 检查是否越界
+            return nullptr;
+        return &gridMap[y][x];  // 返回 gridMap 中对应位置的指针
     }
 
-    // 获取特定坐标的结构体数据
-    MapGrid& get(int x, int y, int z) {
-        if (x >= grid.size() || y >= grid[0].size() || z >= grid[0][0].size()) {
-            throw std::out_of_range("Coordinates out of range.");
+    // 序列化: 将 QuadGridMap 对象的字段以及 QuadGridMap 数组写入文件
+    void Serialize(const std::string& filename) const {
+        std::ofstream ofs(filename, std::ios::binary);
+        if (!ofs.is_open()) {
+            std::cerr << "Error opening file for serialization!" << std::endl;
+            return;
         }
-        return grid[x][y][z];
+
+        // 写入版本号，row 和 col
+        ofs.write(reinterpret_cast<const char*>(&version), sizeof(version));
+        ofs.write(reinterpret_cast<const char*>(&row), sizeof(row));
+        ofs.write(reinterpret_cast<const char*>(&col), sizeof(col));
+
+        // 遍历并序列化二维网格
+        for (size_t i = 0; i < row; ++i) {
+            for (size_t j = 0; j < col; ++j) {
+                gridMap[i][j].Serialize(ofs);
+            }
+        }
+        ofs.close();
     }
 
-    // 序列化数组到文件
-    void serialize(const std::string& filename) {
-        std::ofstream ofs(filename);
-        if (!ofs) {
-            throw std::runtime_error("Failed to open file for writing.");
-        }
-        for (const auto& layer : grid) {
-            for (const auto& row : layer) {
-                for (const auto& cell : row) {
-                    ofs << cell << std::endl;
-                }
+    void Serialize(std::ofstream& ofs) const {
+        // 写入版本号，row 和 col
+        ofs.write(reinterpret_cast<const char*>(&version), sizeof(version));
+        ofs.write(reinterpret_cast<const char*>(&row), sizeof(row));
+        ofs.write(reinterpret_cast<const char*>(&col), sizeof(col));
+        // 遍历并序列化二维网格
+        for (size_t i = 0; i < row; ++i) {
+            for (size_t j = 0; j < col; ++j) {
+                gridMap[i][j].Serialize(ofs);
             }
         }
     }
 
-    // 从文件反序列化数组
-    void deserialize(const std::string& filename, int x, int y, int z) {
-        std::ifstream ifs(filename);
-        if (!ifs) {
-            throw std::runtime_error("Failed to open file for reading.");
+    // 反序列化: 从文件读取数据并恢复 QuadGridMap 对象的字段以及 QuadGridMap 数组
+    void Deserialize(const std::string& filename) {
+        std::ifstream ifs(filename, std::ios::binary);
+        if (!ifs.is_open()) {
+            std::cerr << "Error opening file for deserialization!" << std::endl;
+            return;
         }
-        init(x, y, z);
-        for (auto& layer : grid) {
-            for (auto& row : layer) {
-                for (auto& cell : row) {
-                    ifs >> cell;
-                }
+
+        // 读取版本号，row 和 col
+        ifs.read(reinterpret_cast<char*>(&version), sizeof(version));
+        ifs.read(reinterpret_cast<char*>(&row), sizeof(row));
+        ifs.read(reinterpret_cast<char*>(&col), sizeof(col));
+
+        // 调整 gridMap 的大小
+        gridMap.resize(row, std::vector<QuadGrid>(col));
+
+        // 遍历并反序列化二维网格
+        for (size_t i = 0; i < row; ++i) {
+            for (size_t j = 0; j < col; ++j) {
+                gridMap[i][j].Deserialize(ifs);
             }
+        }
+        ifs.close();
+    }
+
+    // 打印整个 QuadGridMap 信息
+    void PrintMap() const {
+        for (size_t i = 0; i < row; ++i) {
+            for (size_t j = 0; j < col; ++j) {
+                std::cout << gridMap[i][j] << " ";
+            }
+            std::cout << std::endl;
         }
     }
 };
-
-// 初始化静态成员变量
-std::unique_ptr<Map> Map::instance = nullptr;
-
-/*
-int main() {
-    // 获取单例实例
-    Map& map = Map::getInstance();
-
-    // 初始化3x3x3的三维数组
-    map.init(3, 3, 3);
-
-    // 设置特定坐标的结构体数据
-    MapGrid& cell = map.get(1, 1, 1);
-    cell.id = 42;
-    cell.name = "Center";
-    cell.value = 99.99;
-
-    // 序列化数组到文件
-    map.serialize("map_data.txt");
-
-    // 反序列化数组
-    Map& map2 = Map::getInstance();
-    map2.deserialize("map_data.txt", 3, 3, 3);
-
-    // 打印反序列化后的数据
-    MapGrid& loadedCell = map2.get(1, 1, 1);
-    std::cout << "ID: " << (loadedCell.id ? std::to_string(*loadedCell.id) : "null") << ", "
-              << "Name: " << (loadedCell.name ? *loadedCell.name : "null") << ", "
-              << "Value: " << (loadedCell.value ? std::to_string(*loadedCell.value) : "null")
-              << std::endl;
-
-    return 0;
-}
-*/
