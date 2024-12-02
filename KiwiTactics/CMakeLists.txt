@@ -1,5 +1,11 @@
 set(PNAME KiwiTactics)
 
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(ARCH_DIR "x64")
+else()
+    set(ARCH_DIR "x86")
+endif()
+
 # 递归搜索源文件
 file(GLOB_RECURSE SRC_FILES
     main.cpp
@@ -21,7 +27,6 @@ include_directories(${PYBIND11_INCLUDE_DIR})
 
 # 链接 Python 库目录
 link_directories(${PYTHON_LIB_DIR})
-
 link_directories(${CMAKE_SOURCE_DIR}/spdlog)
 
 # 创建可执行文件目标
@@ -31,8 +36,19 @@ add_executable(${PNAME} ${SRC_FILES})
 target_link_libraries(${PNAME} PRIVATE "${CMAKE_SOURCE_DIR}/dll/x64/sqlite3.lib")
 
 # 可选：在构建后复制共享库（如 DLL）到目标输出目录
-# add_custom_command(TARGET ${PNAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#     "${CMAKE_SOURCE_DIR}/../dll/x64/sqlite3.dll"
-#     $<TARGET_FILE_DIR:${PNAME}>
-# )
+add_custom_command(TARGET ${PNAME} POST_BUILD
+    # 打印即将执行的命令
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying sqlite3.dll from: ${CMAKE_SOURCE_DIR}/dll/${ARCH_DIR}/sqlite3.dll to: $<TARGET_FILE_DIR:${PNAME}>/sqlite3.dll"
+    
+    # 执行复制命令，确保路径格式正确
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/dll/${ARCH_DIR}/sqlite3.dll"
+    "$<TARGET_FILE_DIR:${PNAME}>/sqlite3.dll"
+
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying sqlite3.lib from: ${CMAKE_SOURCE_DIR}/dll/${ARCH_DIR}/sqlite3.lib to: $<TARGET_FILE_DIR:${PNAME}>/sqlite3.lib"
+    
+    # 执行复制命令，确保路径格式正确
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/dll/${ARCH_DIR}/sqlite3.lib"
+    "$<TARGET_FILE_DIR:${PNAME}>/sqlite3.lib"
+)

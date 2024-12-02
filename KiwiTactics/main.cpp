@@ -3,24 +3,22 @@
 
 namespace py = pybind11;
 
-void runAI(const std::string& ai_script) {
+void runAI(const std::string& script) {
     py::scoped_interpreter guard{};  // 启动 Python 解释器
 
     // 导入并执行 Python 脚本
     try {
-        py::module_::import(ai_script.c_str());
+        py::module_::import(script.c_str());
     }
     catch (const std::exception& e) {
         std::cerr << "Error running AI script: " << e.what() << std::endl;
     }
 }
 
-int main() {
-    // 创建一个角色
-    Character player;
+//int main() {
+//    // 调用 runAI 来执行 Python 脚本
+//    runAI("ai_script");
+//    return 0;
+//}
 
-    // 调用 runAI 来执行 Python 脚本
-    runAI("ai_script");
 
-    return 0;
-}

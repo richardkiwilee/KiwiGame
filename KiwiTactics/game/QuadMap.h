@@ -6,6 +6,13 @@
 #include <stdexcept>
 #include <string>
 
+// 定义地格砖块的类型 向下拓展
+enum QuadGridType {
+    Normal = 0x01,
+    Water = 0x02,
+    Lava = 0x03,
+};
+
 // 地格
 struct QuadGrid {
     uint8_t height = 0x00;         // 不处理类似拱门的空洞结构，只考虑地面高度
@@ -34,7 +41,7 @@ struct QuadGrid {
         os << "Height: " << +grid.height << ", "
             << "Terrain: " << +grid.terrain << ", "
             << "Effect: " << +grid.effect << ", "
-            << "ObjectID: " << grid.objectid;
+            << "ObjectID: " << grid.objectid << "\n";
         return os;
     }
 
