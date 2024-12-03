@@ -1,12 +1,16 @@
 #include <pybind11/embed.h>  // pybind11 嵌入 Python 的头文件
 #include <pybind11/pybind11.h>
-#include "character.h"
+#include <iostream>
+#include <string>
 
 namespace py = pybind11;
 
 class AIModel {
 public:
-    AIModel(const std::string& model_name) : model_name(model_name) {}
+    std::string model_name;
+    int a;  // 新增的 public 成员
+
+    AIModel(const std::string& name, int value = 0) : model_name(name), a(value) {}
 
     void train() {
         std::cout << "Training model: " << model_name << std::endl;
@@ -15,41 +19,47 @@ public:
     std::string predict(const std::string& input) {
         return "Prediction for '" + input + "' using model: " + model_name;
     }
-
-private:
-    std::string model_name;
 };
 
-void runAI(const std::string& script) {
+// 执行 Python 脚本并与 C++ 对象交互
+void runAI(AIModel& model, const std::string& script) {
     static py::scoped_interpreter guard{};  // 确保解释器只初始化一次
 
     // 创建一个模块
     py::module_ m("ai_module");
 
-    // 在模块中绑定 C++ 类
+    // 在模块中绑定 C++ 类，并暴露成员变量
     py::class_<AIModel>(m, "AIModel")
-        .def(py::init<const std::string&>())
-        .def("train", &AIModel::train)
-        .def("predict", &AIModel::predict);
+        .def(py::init<const std::string&, int>())  // 绑定构造函数
+        .def("train", &AIModel::train)            // 暴露 train 方法
+        .def("predict", &AIModel::predict)        // 暴露 predict 方法
+        .def_readwrite("a", &AIModel::a);         // 暴露成员变量 a
 
     // 将模块添加到 sys.modules 中
     py::module_ sys = py::module_::import("sys");
-    sys.attr("modules")["ai_module"] = m;
+    sys.attr("modules")["ai_module"] = m;  // 手动注册 ai_module 模块
 
-    // 导入并执行 Python 脚本
+    // 将 C++ 对象注入到 Python 脚本的全局命名空间
+    py::dict globals = py::globals();
+    globals["model"] = py::cast(&model);  // 将 C++ model 对象传递给 Python
+
+    // 执行 Python 脚本
     try {
-        py::module_::import(script.c_str());
+        py::module_::import(script.c_str());  // 导入并执行脚本
     }
     catch (const std::exception& e) {
         std::cerr << "Error running AI script: " << e.what() << std::endl;
     }
 }
 
-
 int main() {
+    // 创建 C++ 对象实例并传递给 Python 脚本
+    AIModel model("ai_module", 10);
+
     // 调用 runAI 来执行 Python 脚本
-    runAI("ai_script");
+    runAI(model, "ai_script");  // 传入脚本名
+
+    // 输出成员变量 a 的值
+    std::cout << "C++ value of a after Python modification: " << model.a << std::endl;
     return 0;
 }
-
-
