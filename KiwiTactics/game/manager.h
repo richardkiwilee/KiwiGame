@@ -137,28 +137,28 @@ public:
 	
 };
 
-int main() {
-    // 创建 QuadGridMap 对象并填充 QuadGridMap
-    QuadGridMap myMap(1, 5, 5);  // version = 1, row = 5, col = 5
-    for (size_t i = 0; i < 5; ++i) {
-        for (size_t j = 0; j < 5; ++j) {
-            myMap.gridMap[i][j].height = i + j;
-            myMap.gridMap[i][j].terrain = (i + j) % 3;
-            myMap.gridMap[i][j].effect = (i + j) % 2;
-            myMap.gridMap[i][j].objectid = 1234567890123456 + (i * 10 + j);
-        }
-    }
-
-    // 序列化到文件
-    myMap.Serialize("map.dat");
-
-    // 创建一个新的 QuadGridMap 对象，并从文件中反序列化
-    QuadGridMap newMap(0, 0, 0);  // version 和尺寸初始为0
-    newMap.Deserialize("map.dat");
-
-    // 打印反序列化后的 QuadGridMap 内容
-    std::cout << "Deserialized Map: " << std::endl;
-    newMap.PrintMap();
-
-    return 0;
-}
+//int main() {
+//    // 创建 QuadGridMap 对象并填充 QuadGridMap
+//    QuadGridMap myMap(1, 5, 5);  // version = 1, row = 5, col = 5
+//    for (size_t i = 0; i < 5; ++i) {
+//        for (size_t j = 0; j < 5; ++j) {
+//            myMap.gridMap[i][j].height = i + j;
+//            myMap.gridMap[i][j].terrain = (i + j) % 3;
+//            myMap.gridMap[i][j].effect = (i + j) % 2;
+//            myMap.gridMap[i][j].objectid = 1234567890123456 + (i * 10 + j);
+//        }
+//    }
+//
+//    // 序列化到文件
+//    myMap.Serialize("map.dat");
+//
+//    // 创建一个新的 QuadGridMap 对象，并从文件中反序列化
+//    QuadGridMap newMap(0, 0, 0);  // version 和尺寸初始为0
+//    newMap.Deserialize("map.dat");
+//
+//    // 打印反序列化后的 QuadGridMap 内容
+//    std::cout << "Deserialized Map: " << std::endl;
+//    newMap.PrintMap();
+//
+//    return 0;
+//}

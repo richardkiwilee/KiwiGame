@@ -51,4 +51,9 @@ add_custom_command(TARGET ${PNAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     "${CMAKE_SOURCE_DIR}/dll/${ARCH_DIR}/sqlite3.lib"
     "$<TARGET_FILE_DIR:${PNAME}>/sqlite3.lib"
+
+   # 执行复制命令，确保路径格式正确
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/${PNAME}/ai_script.py"
+    "$<TARGET_FILE_DIR:${PNAME}>/ai_script.py"
 )
