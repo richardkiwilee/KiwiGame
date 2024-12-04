@@ -52,7 +52,9 @@ class ArchiveManager
 public:
     std::string archive_name;
     ArchiveManager(std::string archive_name)
-    {};
+    {
+        this->archive_name = archive_name;
+    };
     ~ArchiveManager() {};
     ModuleManager* module;
 	QuadGridMap* map;
@@ -63,6 +65,10 @@ public:
     ObjectsManager<Building>* buildings;
     RandomSeed* randomBuffer;
     
+    void Serialize() {
+        Serialize(archive_name);
+    }
+
     void Serialize(const std::string& filename) {
         std::ofstream ofs(filename, std::ios::binary);
         if (!ofs) {
