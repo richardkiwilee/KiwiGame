@@ -37,11 +37,7 @@ void runAI(AIModel& model, const std::string& script) {
 
     // 将模块添加到 sys.modules 中
     py::module_ sys = py::module_::import("sys");
-    sys.attr("modules")["ai_module"] = m;  // 手动注册 ai_module 模块
-
-    // 将 C++ 对象注入到 Python 脚本的全局命名空间
-    py::dict globals = py::globals();
-    globals["model"] = py::cast(&model);  // 将 C++ model 对象传递给 Python
+    sys.attr("modules")["ai_module"] = py::cast(&model);  // 手动注册 ai_module 模块
 
     // 执行 Python 脚本
     try {
