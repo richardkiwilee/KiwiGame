@@ -79,18 +79,7 @@ public:
             std::cerr << "Error opening file for serialization!" << std::endl;
             return;
         }
-
-        // 写入版本号，row 和 col
-        ofs.write(reinterpret_cast<const char*>(&version), sizeof(version));
-        ofs.write(reinterpret_cast<const char*>(&row), sizeof(row));
-        ofs.write(reinterpret_cast<const char*>(&col), sizeof(col));
-
-        // 遍历并序列化二维网格
-        for (size_t i = 0; i < row; ++i) {
-            for (size_t j = 0; j < col; ++j) {
-                gridMap[i][j].Serialize(ofs);
-            }
-        }
+        this->Serialize(ofs);
         ofs.close();
     }
 
@@ -114,24 +103,24 @@ public:
             std::cerr << "Error opening file for deserialization!" << std::endl;
             return;
         }
-
+        this->Deserialize(ifs);
+        ifs.close();
+    }
+    
+    void Deserialize(std::ifstream& ifs) {
         // 读取版本号，row 和 col
         ifs.read(reinterpret_cast<char*>(&version), sizeof(version));
         ifs.read(reinterpret_cast<char*>(&row), sizeof(row));
         ifs.read(reinterpret_cast<char*>(&col), sizeof(col));
-
         // 调整 gridMap 的大小
         gridMap.resize(row, std::vector<QuadGrid>(col));
-
         // 遍历并反序列化二维网格
         for (size_t i = 0; i < row; ++i) {
             for (size_t j = 0; j < col; ++j) {
                 gridMap[i][j].Deserialize(ifs);
             }
         }
-        ifs.close();
     }
-
     // 打印整个 QuadGridMap 信息
     void PrintMap() const {
         for (size_t i = 0; i < row; ++i) {

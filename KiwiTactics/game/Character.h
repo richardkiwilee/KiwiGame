@@ -69,11 +69,11 @@ T clamp(T newValue, Property<T>& minValue, Property<T>& maxValue) {
 class Character
 {
 public:
-    Character(){};
-	~Character();
+    Character() = default;
+	~Character() = default;
 	FaceDirection face;
 	CharacterType _character_type;
-	
+    int64_t id;
 	// 基础属性
     Property<int16_t> hp;
     Property<int16_t> mana;
@@ -81,5 +81,32 @@ public:
     Property<int8_t> movement;
     Property<int8_t> ap;
     Property<int16_t> armor;
+    // 序列化: 将 QuadGridMap 对象的字段以及 QuadGridMap 数组写入文件
+    void Serialize(const std::string& filename) const {
+        std::ofstream ofs(filename, std::ios::binary);
+        if (!ofs.is_open()) {
+            std::cerr << "Error opening file for serialization!" << std::endl;
+            return;
+        }
+        this->Serialize(ofs);
+        ofs.close();
+    }
+
+    void Serialize(std::ofstream& ofs) const {
+    }
+
+    // 反序列化: 从文件读取数据并恢复 QuadGridMap 对象的字段以及 QuadGridMap 数组
+    void Deserialize(const std::string& filename) {
+        std::ifstream ifs(filename, std::ios::binary);
+        if (!ifs.is_open()) {
+            std::cerr << "Error opening file for deserialization!" << std::endl;
+            return;
+        }
+        this->Deserialize(ifs);
+        ifs.close();
+    }
+
+    void Deserialize(std::ifstream& ifs) {
+    }
 
 };

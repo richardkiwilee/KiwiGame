@@ -9,11 +9,13 @@ endif()
 # 递归搜索源文件
 file(GLOB_RECURSE SRC_FILES
     main.cpp
+    version.h 
     game/*.*
     data/*.*
     endian/*.*
     extern/*.*
     plugin/*.*
+    utils/*.*
 )
 
 # 为源文件生成源组
@@ -54,6 +56,6 @@ add_custom_command(TARGET ${PNAME} POST_BUILD
 
    # 执行复制命令，确保路径格式正确
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    "${CMAKE_SOURCE_DIR}/${PNAME}/ai_script.py"
+    "${CMAKE_SOURCE_DIR}/py/ai_script.py"
     "$<TARGET_FILE_DIR:${PNAME}>/ai_script.py"
 )
