@@ -38,6 +38,18 @@ void handleCommand(ArchiveManager* manager, const std::string& input) {
         testLua();
         return;
     }
+    if (command == "reglua")
+    {
+        sol::state lua;
+        lua.open_libraries(sol::lib::base);  // 打开基本库
+        lua.set_function("add", add);  // 将 C++ 函数 add 注册到 Lua 中
+        // 运行 Lua 脚本，替换 add 函数
+        runLuaFromFile(lua, "add.lua");
+        sol::protected_function_result ret = lua["add"](3, 4);
+        // 调用 Lua 中的 add 函数
+        std::cout << "Result of add(3, 4): " << ret.begin()->as<int>() << std::endl;  // 输出 12（3 * 4）
+        return;
+    }
     if (command == "regpy")
     {
         Py_Initialize();

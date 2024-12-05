@@ -68,3 +68,17 @@ int testLua() {
 
     return 0;
 }
+
+int add(int a, int b) {
+    return 2 * a + b;
+}
+
+
+void runLuaFromFile(sol::state& lua, const std::string& filename) {
+    try {
+        lua.script_file(filename);  // Ö´ÐÐ Lua ÎÄ¼þ
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error running Lua script: " << e.what() << std::endl;
+    }
+}
