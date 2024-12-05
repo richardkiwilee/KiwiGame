@@ -54,7 +54,8 @@ std::string ArchiveCodec::DecodeStock()
 
 void ArchiveCodec::trim(char * str)
 {
-	int len, k, i;
+	size_t len;
+	int k, i;
 	if (str == NULL)
 		return;
 	len = strlen(str);
@@ -73,7 +74,7 @@ void ArchiveCodec::trim(char * str)
 
 char * ArchiveCodec::rtrim(char * s)
 {
-	int i;
+	size_t i;
 	if (s== NULL)
 	{
 		return (char*)NULL;
@@ -113,7 +114,6 @@ std::string ArchiveCodec::DecodeString(const int size)
 	char* _stock = new char[size];
 	std::string _str;
 	this->DecodeBytes((uint8_t*)_stock, size);
-	int i, j;
 	_str = this->rtrim(_stock);
 	return _str;
 }

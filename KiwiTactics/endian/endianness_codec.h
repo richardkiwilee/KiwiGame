@@ -13,14 +13,14 @@ public:
 	CodecBuffer(void);
 	virtual ~CodecBuffer(void);
 
-	void MallocBuffer(int length = INITIAL_MSG_SIZE);
+	void MallocBuffer(uint32_t length = INITIAL_MSG_SIZE);
 	void ResetBuffer(uint8_t* bytes, int length);
 	void RiseBuffer();
 
-	int		Get_Buffer_Used();
-	int		Get_Buffer_Left();
-	int		Get_Buffer_Size();
-	int		IsBufferEmpty();
+	uint32_t	Get_Buffer_Used();
+	uint32_t	Get_Buffer_Left();
+	uint32_t	Get_Buffer_Size();
+	uint32_t	IsBufferEmpty();
 	void	CopyTo(uint8_t* buffer);
 	uint8_t* Data() { return data_; }
 	void  PrintBuffer();

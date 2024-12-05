@@ -5,6 +5,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(PYTHON_LIB_DIR "D:/Python36/libs")
 set(PYTHON_INCLUDE_DIR "D:/Python36/include")
 set(PYBIND11_INCLUDE_DIR "D:/Python36/Lib/site-packages/pybind11/include")
+set(LUA_DIR "${CMAKE_SOURCE_DIR}/lua-5.4.2")
+set(SOL2_DIR "${CMAKE_SOURCE_DIR}/sol2-3.3.0")
 
 # 启用 C++17
 set(CMAKE_CXX_STANDARD 17)

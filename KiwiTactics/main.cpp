@@ -5,6 +5,8 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include "utils/call_python.h"
+#include "utils/call_lua.h"
 
 std::string getStringByIndex(const std::string& str, size_t index) {
     std::stringstream ss(str);
@@ -26,6 +28,34 @@ std::string getStringByIndex(const std::string& str, size_t index) {
 }
 void handleCommand(ArchiveManager* manager, const std::string& input) {
     std::string command = getStringByIndex(input, 0);
+    if (command == "testpy")
+    {
+        testPy();
+        return;
+    }
+    if (command == "testlua")
+    {
+        testLua();
+        return;
+    }
+    if (command == "regpy")
+    {
+        Py_Initialize();
+
+        // 设置 Python 脚本路径
+        PyRun_SimpleString("import sys");
+        PyRun_SimpleString("sys.path.append('.')");
+
+        // 注册 Python 函数
+        register_python_function("register", "A2");
+
+        // 调用动态函数
+        A1_dynamic(42); // 如果 Python 函数注册成功，将调用 Python 的 A2；否则调用 C++ 的 A1
+
+        // 关闭 Python 解释器
+        Py_Finalize();
+        return;
+    }
     if (command == "save") {
         manager->Serialize();
         return;
@@ -72,8 +102,8 @@ int main() {
     manager.neutrals = new ObjectsManager<Character>();
     manager.emeries = new ObjectsManager<Character>();
     manager.map = new QuadGridMap(1, 5, 5);
-    for (size_t i = 0; i < 5; ++i) {
-        for (size_t j = 0; j < 5; ++j) {
+    for (uint8_t i = 0; i < 5; ++i) {
+        for (uint8_t j = 0; j < 5; ++j) {
             manager.map->gridMap[i][j].height = i + j;
             manager.map->gridMap[i][j].terrain = (i + j) % 3;
             manager.map->gridMap[i][j].effect = (i + j) % 2;

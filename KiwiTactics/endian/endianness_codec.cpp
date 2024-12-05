@@ -19,7 +19,7 @@ CodecBuffer::~CodecBuffer()
 	end_ = NULL;
 }
 
-void CodecBuffer::MallocBuffer(int length)
+void CodecBuffer::MallocBuffer(uint32_t length)
 {
 	if (data_ == NULL)
 	{
@@ -70,24 +70,28 @@ void CodecBuffer::PrintBuffer()
 	std::cout << std::endl;
 }
 
-int CodecBuffer::IsBufferEmpty()
+uint32_t CodecBuffer::IsBufferEmpty()
 {
-	return head_ >= tail_;
+	return (uint32_t)(head_ >= tail_);
 }
 
-int CodecBuffer::Get_Buffer_Left()
+uint32_t CodecBuffer::Get_Buffer_Left()
 {
-	return end_ - tail_;
+	uint32_t ret = (uint32_t)(end_ - tail_);
+	return ret;
 }
 
-int CodecBuffer::Get_Buffer_Size()
+uint32_t CodecBuffer::Get_Buffer_Size()
 {
-	return end_ - head_;
+	uint32_t ret = (uint32_t)(end_ - tail_);
+	return ret;
+
 }
 
-int CodecBuffer::Get_Buffer_Used()
+uint32_t CodecBuffer::Get_Buffer_Used()
 {
-	return tail_ - head_;
+	uint32_t ret = (uint32_t)(end_ - tail_);
+	return ret;
 }
 
 EndiannessCodec::EndiannessCodec(void)
@@ -271,7 +275,7 @@ uint32_t EndiannessCodec::CheckSum()
   uint32_t idx;
   uint32_t cks =0;
   uint8_t* buff = buffer.Data();
-  int buffsize = buffer.Get_Buffer_Used();
+  uint32_t buffsize = buffer.Get_Buffer_Used();
   for (idx=0,cks=0;idx<buffsize;cks+=(uint32_t)buff[idx++]);
   return (cks%256);
 }
@@ -281,7 +285,7 @@ uint32_t EndiannessCodec::CheckSumSsel1()
   uint32_t idx;
   uint8_t cks = 0;
   uint8_t* buff = buffer.Data();
-  int buffsize = buffer.Get_Buffer_Used();
-  for (idx = 0, cks = 0; idx<buffsize; cks += (uint8_t)buff[idx++]);
+  uint32_t buffsize = buffer.Get_Buffer_Used();
+  for (idx = 0, cks = 0; idx < buffsize; cks += (uint8_t)buff[idx++]);
   return (uint8_t)cks;
 }
