@@ -6,6 +6,7 @@
 #include <pybind11/embed.h>  // pybind11 嵌入 Python 的头文件
 #include <pybind11/pybind11.h>
 #include "Structs.h"
+#include <format>
 
 const int8_t DAMAGE_TYPE_PHYSICAL = 1;
 const int8_t DAMAGE_TYPE_MAGICAL = 2;
@@ -34,7 +35,14 @@ public:
 	}	
 
 	std::function<double(DamageCalcuteInfo*)> Get(int64_t skillId) {
-		return SkillMap[skillId];
+        auto it = SkillMap.find(skillId);
+        if (it != SkillMap.end()) {
+            return SkillMap[skillId];
+        }
+        else {
+            std::cerr << "ID " << skillId << " not found in SkillMap!" << std::endl;
+        }
+        return SkillMap[skillId];
 	}
 
 	void Register(lua_State* L, int64_t id, const std::string& script_name, const std::string& func_name) {
@@ -173,249 +181,256 @@ private:
         }
         Py_XDECREF(pModule);
     }
+    void push_CharacterInfo_to_lua(lua_State* L, CharacterInfo* info, std::string name)
+    {
+        // Push Attacker to Lua table
+        lua_pushstring(L, name.c_str());
+        lua_newtable(L);  // 创建 Attacker 表
+        std::cout << "Pushed "<< name <<" table" << std::endl;
+        lua_pushstring(L, "id");
+        lua_pushinteger(L, info->id);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".id: " << info->id << std::endl;
+
+        lua_pushstring(L, "position_x");
+        lua_pushinteger(L, info->position_x);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".position_x: " << info->position_x << std::endl;
+
+        lua_pushstring(L, "position_y");
+        lua_pushinteger(L, info->position_y);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".position_y: " << info->position_y << std::endl;
+
+        lua_pushstring(L, "position_height");
+        lua_pushinteger(L, info->position_height);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".position_height: " << info->position_height << std::endl;
+
+        lua_pushstring(L, "direction");
+        lua_pushinteger(L, info->direction);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".direction: " << info->direction << std::endl;
+
+        lua_pushstring(L, "MaxHealth");
+        lua_pushinteger(L, info->MaxHealth);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".MaxHealth: " << info->MaxHealth << std::endl;
+
+        lua_pushstring(L, "Health");
+        lua_pushinteger(L, info->Health);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Health: " << info->Health << std::endl;
+
+        lua_pushstring(L, "MaxMana");
+        lua_pushinteger(L, info->MaxMana);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".MaxMana: " << info->MaxMana << std::endl;
+
+        lua_pushstring(L, "Mana");
+        lua_pushinteger(L, info->Mana);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Mana: " << info->Mana << std::endl;
+
+        lua_pushstring(L, "MaxArmor");
+        lua_pushinteger(L, info->MaxArmor);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".MaxArmor: " << info->MaxArmor << std::endl;
+
+        lua_pushstring(L, "Armor");
+        lua_pushinteger(L, info->Armor);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Armor: " << info->Armor << std::endl;
+
+        lua_pushstring(L, "MaxActionPoint");
+        lua_pushinteger(L, info->MaxActionPoint);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".MaxActionPoint: " << info->MaxActionPoint << std::endl;
+
+        lua_pushstring(L, "ActionPoint");
+        lua_pushinteger(L, info->ActionPoint);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".ActionPoint: " << info->ActionPoint << std::endl;
+
+        lua_pushstring(L, "MaxMovement");
+        lua_pushinteger(L, info->MaxMovement);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".MaxMovement: " << info->MaxMovement << std::endl;
+
+        lua_pushstring(L, "Movement");
+        lua_pushinteger(L, info->Movement);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Movement: " << info->Movement << std::endl;
+
+        lua_pushstring(L, "Strength");
+        lua_pushinteger(L, info->Strength);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Strength: " << info->Strength << std::endl;
+
+        lua_pushstring(L, "PhyDef");
+        lua_pushinteger(L, info->PhyDef);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".PhyDef: " << info->PhyDef << std::endl;
+
+        lua_pushstring(L, "Intelligence");
+        lua_pushinteger(L, info->Intelligence);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Intelligence: " << info->Intelligence << std::endl;
+
+        lua_pushstring(L, "MagDef");
+        lua_pushinteger(L, info->MagDef);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".MagDef: " << info->MagDef << std::endl;
+
+        lua_pushstring(L, "Dexterity");
+        lua_pushinteger(L, info->Dexterity);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Dexterity: " << info->Dexterity << std::endl;
+
+        lua_pushstring(L, "CriticalRate");
+        lua_pushinteger(L, info->CriticalRate);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".CriticalRate: " << info->CriticalRate << std::endl;
+
+        lua_pushstring(L, "CriticalStrength");
+        lua_pushinteger(L, info->CriticalStrengh);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".CriticalStrength: " << info->CriticalStrengh << std::endl;
+
+        lua_pushstring(L, "Luck");
+        lua_pushinteger(L, info->Luck);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Luck: " << info->Luck << std::endl;
+
+        lua_pushstring(L, "Will");
+        lua_pushinteger(L, info->Will);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Will: " << info->Will << std::endl;
+
+        lua_pushstring(L, "HitRate");
+        lua_pushinteger(L, info->HitRate);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".HitRate: " << info->HitRate << std::endl;
+
+        lua_pushstring(L, "Evasion");
+        lua_pushinteger(L, info->Evasion);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Evasion: " << info->Evasion << std::endl;
+
+        lua_pushstring(L, "Jump");
+        lua_pushinteger(L, info->Jump);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".Jump: " << info->Jump << std::endl;
+
+        lua_settable(L, -3);  // 将 Attacker 表插入 DamageCalcuteInfo 表
+        std::cout << "Pushed " << name << " to DamageCalcuteInfo table" << std::endl;
+
+    }
+    void push_SpatialRelationship_to_lua(lua_State* L, SpatialRelationship* info, std::string name)
+    {
+        // 将 Relative 转换为 Lua 表
+        lua_pushstring(L, name.c_str());
+        lua_newtable(L);  // 创建 Relative 表
+
+        lua_pushstring(L, "inSight");
+        lua_pushboolean(L, info->inSight);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".inSight: " << info->inSight << std::endl;
+        lua_pushstring(L, "inAttackRange");
+        lua_pushboolean(L, info->inAttackRange);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".inAttackRange: " << info->inAttackRange << std::endl;
+        lua_pushstring(L, "isBackStrike");
+        lua_pushboolean(L, info->isBackStrike);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".isBackStrike: " << info->isBackStrike << std::endl;
+        lua_pushstring(L, "isSideStrike");
+        lua_pushboolean(L, info->isSideStrike);
+        lua_settable(L, -3);
+        std::cout << "Pushed " << name << ".isSideStrike: " << info->isSideStrike << std::endl;
+
+        lua_settable(L, -3);
+    }
     void push_damage_info_to_lua(lua_State* L, DamageCalcuteInfo* info) {
         // 创建一个新的表来表示 DamageCalcuteInfo
         lua_newtable(L);
-        // Push Attacker to Lua table
-        lua_pushstring(L, "Attacker");
-        lua_newtable(L);  // 创建 Attacker 表
-        lua_pushstring(L, "id");
-        lua_pushinteger(L, info->Attacker.id);
-        lua_settable(L, -3);
+        push_CharacterInfo_to_lua(L, &info->Attacker, "Attacker");
+        push_CharacterInfo_to_lua(L, &info->Defender, "Defender");
+        push_SpatialRelationship_to_lua(L, &info->Relative, "Relative");
+        // lua_settable(L, -3);  // 将 Relative 表插入 DamageCalcuteInfo 表
+    }
+    // 用于递归地打印表格的函数
+    void print_table(lua_State* L, int index, int depth) {
+        lua_pushnil(L);  // 将表中的第一个元素压栈
+        while (lua_next(L, index) != 0) {
+            // 打印缩进（根据深度）
+            for (int i = 0; i < depth; ++i) {
+                std::cout << "  ";  // 用于视觉缩进
+            }
 
-        lua_pushstring(L, "position_x");
-        lua_pushinteger(L, info->Attacker.position_x);
-        lua_settable(L, -3);
+            // 输出键
+            int t = lua_type(L, -2);
+            if (t == LUA_TSTRING) {
+                std::cout << "Key: " << lua_tostring(L, -2) << " -> ";
+            }
+            else {
+                std::cout << "Key (non-string) -> ";
+            }
 
-        lua_pushstring(L, "position_y");
-        lua_pushinteger(L, info->Attacker.position_y);
-        lua_settable(L, -3);
+            // 输出值
+            t = lua_type(L, -1);
+            switch (t) {
+            case LUA_TSTRING:
+                std::cout << "(string) " << lua_tostring(L, -1) << std::endl;
+                break;
+            case LUA_TBOOLEAN:
+                std::cout << "(boolean) " << (lua_toboolean(L, -1) ? "true" : "false") << std::endl;
+                break;
+            case LUA_TNUMBER:
+                std::cout << "(number) " << lua_tonumber(L, -1) << std::endl;
+                break;
+            case LUA_TTABLE:
+                std::cout << "(table) {" << std::endl;
+                // 递归调用，增加深度
+                print_table(L, lua_gettop(L), depth + 1);
+                for (int i = 0; i < depth; ++i) {
+                    std::cout << "  ";  // 用于结束递归的缩进
+                }
+                std::cout << "}" << std::endl;
+                break;
+            default:
+                std::cout << "(unknown type)" << std::endl;
+                break;
+            }
 
-        lua_pushstring(L, "position_height");
-        lua_pushinteger(L, info->Attacker.position_height);
-        lua_settable(L, -3);
+            lua_pop(L, 1);  // 弹出当前值，继续下一个键
+        }
+    }
 
-        lua_pushstring(L, "direction");
-        lua_pushinteger(L, info->Attacker.direction);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxHealth");
-        lua_pushinteger(L, info->Attacker.MaxHealth);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Health");
-        lua_pushinteger(L, info->Attacker.Health);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxMana");
-        lua_pushinteger(L, info->Attacker.MaxMana);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Mana");
-        lua_pushinteger(L, info->Attacker.Mana);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxArmor");
-        lua_pushinteger(L, info->Attacker.MaxArmor);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Armor");
-        lua_pushinteger(L, info->Attacker.Armor);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxActionPoint");
-        lua_pushinteger(L, info->Attacker.MaxActionPoint);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "ActionPoint");
-        lua_pushinteger(L, info->Attacker.ActionPoint);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxMovement");
-        lua_pushinteger(L, info->Attacker.MaxMovement);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Movement");
-        lua_pushinteger(L, info->Attacker.Movement);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Strength");
-        lua_pushinteger(L, info->Attacker.Strength);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "PhyDef");
-        lua_pushinteger(L, info->Attacker.PhyDef);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Intelligence");
-        lua_pushinteger(L, info->Attacker.Intelligence);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MagDef");
-        lua_pushinteger(L, info->Attacker.MagDef);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Dexterity");
-        lua_pushinteger(L, info->Attacker.Dexterity);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "CriticalRate");
-        lua_pushinteger(L, info->Attacker.CriticalRate);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "CriticalStrength");
-        lua_pushinteger(L, info->Attacker.CriticalStrengh);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Luck");
-        lua_pushinteger(L, info->Attacker.Luck);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Will");
-        lua_pushinteger(L, info->Attacker.Will);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "HitRate");
-        lua_pushinteger(L, info->Attacker.HitRate);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Evasion");
-        lua_pushinteger(L, info->Attacker.Evasion);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Jump");
-        lua_pushinteger(L, info->Attacker.Jump);
-        lua_settable(L, -3);
-        lua_settable(L, -3);  // 将 Attacker 表插入 DamageCalcuteInfo 表
-
-        // Push Defender to Lua table
-        lua_pushstring(L, "Defender");
-        lua_newtable(L);  // 创建 Defender 表
-        lua_pushstring(L, "id");
-        lua_pushinteger(L, info->Defender.id);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "position_x");
-        lua_pushinteger(L, info->Defender.position_x);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "position_y");
-        lua_pushinteger(L, info->Defender.position_y);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "position_height");
-        lua_pushinteger(L, info->Defender.position_height);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "direction");
-        lua_pushinteger(L, info->Defender.direction);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxHealth");
-        lua_pushinteger(L, info->Defender.MaxHealth);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Health");
-        lua_pushinteger(L, info->Defender.Health);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxMana");
-        lua_pushinteger(L, info->Defender.MaxMana);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Mana");
-        lua_pushinteger(L, info->Defender.Mana);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxArmor");
-        lua_pushinteger(L, info->Defender.MaxArmor);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Armor");
-        lua_pushinteger(L, info->Defender.Armor);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxActionPoint");
-        lua_pushinteger(L, info->Defender.MaxActionPoint);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "ActionPoint");
-        lua_pushinteger(L, info->Defender.ActionPoint);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MaxMovement");
-        lua_pushinteger(L, info->Defender.MaxMovement);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Movement");
-        lua_pushinteger(L, info->Defender.Movement);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Strength");
-        lua_pushinteger(L, info->Defender.Strength);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "PhyDef");
-        lua_pushinteger(L, info->Defender.PhyDef);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Intelligence");
-        lua_pushinteger(L, info->Defender.Intelligence);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "MagDef");
-        lua_pushinteger(L, info->Defender.MagDef);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Dexterity");
-        lua_pushinteger(L, info->Defender.Dexterity);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "CriticalRate");
-        lua_pushinteger(L, info->Defender.CriticalRate);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "CriticalStrength");
-        lua_pushinteger(L, info->Defender.CriticalStrengh);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Luck");
-        lua_pushinteger(L, info->Defender.Luck);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Will");
-        lua_pushinteger(L, info->Defender.Will);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "HitRate");
-        lua_pushinteger(L, info->Defender.HitRate);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Evasion");
-        lua_pushinteger(L, info->Defender.Evasion);
-        lua_settable(L, -3);
-
-        lua_pushstring(L, "Jump");
-        lua_pushinteger(L, info->Defender.Jump);
-        lua_settable(L, -3);
-        lua_settable(L, -3);  // 将 Defender 表插入 DamageCalcuteInfo 表
-
-        // 将 Relative 转换为 Lua 表
-        lua_pushstring(L, "Relative");
-        lua_newtable(L);  // 创建 Relative 表
-        lua_pushstring(L, "inSight");
-        lua_pushboolean(L, info->Relative.inSight);
-        lua_settable(L, -3);
-        lua_pushstring(L, "inAttackRange");
-        lua_pushboolean(L, info->Relative.inAttackRange);
-        lua_settable(L, -3);
-        lua_pushstring(L, "isBackStrike");
-        lua_pushboolean(L, info->Relative.isBackStrike);
-        lua_settable(L, -3);
-        lua_pushstring(L, "isSideStrike");
-        lua_pushboolean(L, info->Relative.isSideStrike);
-        lua_settable(L, -3);
-        lua_settable(L, -3);  // 将 Relative 表插入 DamageCalcuteInfo 表
+    void print_lua_stack(lua_State* L) {
+        int stackTop = lua_gettop(L);  // 获取栈顶的索引
+        for (int i = 1; i <= stackTop; ++i) {
+            int t = lua_type(L, i);
+            switch (t) {
+            case LUA_TSTRING:  // 字符串
+                std::cout << "Stack[" << i << "]: (string) " << lua_tostring(L, i) << std::endl;
+                break;
+            case LUA_TBOOLEAN:  // 布尔值
+                std::cout << "Stack[" << i << "]: (boolean) " << (lua_toboolean(L, i) ? "true" : "false") << std::endl;
+                break;
+            case LUA_TNUMBER:  // 数字
+                std::cout << "Stack[" << i << "]: (number) " << lua_tonumber(L, i) << std::endl;
+                break;
+            case LUA_TTABLE:  // 表
+                std::cout << "Stack[" << i << "]: (table) {" << std::endl;
+                print_table(L, i, 1);  // 调用递归打印函数，初始深度为1
+                std::cout << "}" << std::endl;
+                break;
+            default:
+                std::cout << "Stack[" << i << "]: (unknown type)" << std::endl;
+                break;
+            }
+        }
     }
     void Register_lua(lua_State* L, int64_t id, const std::string& script_name, const std::string& func_name) {
         if (!L) {
@@ -432,7 +447,7 @@ private:
             SkillMap[id] = [L, func_name, this](DamageCalcuteInfo* info) -> double {
                 // 将 DamageCalcuteInfo 转换并推送到 Lua 栈
                 push_damage_info_to_lua(L, info);
-
+                // print_lua_stack(L);
                 // 调用 Lua 函数
                 if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
                     std::cerr << "Error calling Lua function: " << lua_tostring(L, -1) << std::endl;

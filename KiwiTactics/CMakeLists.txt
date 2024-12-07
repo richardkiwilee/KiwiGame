@@ -71,4 +71,8 @@ add_custom_command(TARGET ${PNAME} POST_BUILD
     "${CMAKE_SOURCE_DIR}/py/register.py"
     "$<TARGET_FILE_DIR:${PNAME}>/register.py"
 
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/py/register.lua"
+    "$<TARGET_FILE_DIR:${PNAME}>/register.lua"
+
 )

@@ -38,12 +38,16 @@ void handleCommand(ArchiveManager* manager, const std::string& input) {
 
         SkillManager mgr = SkillManager();
         mgr.Register(nullptr, 1, "register.py", "FireBall");
+        mgr.Register(lua, 2, "register.lua", "WaterBall");
         DamageCalcuteInfo t;
         t.Attacker.Armor = 10;
-        auto _func = mgr.Get(1);
-        double damage = _func(&t);
-        std::cout << "Result of FireBall: " << damage << std::endl;
+        auto _func1 = mgr.Get(1);
+        double damage1 = _func1(&t);
 
+        auto _func2 = mgr.Get(2);
+        double damage2 = _func2(&t);
+        std::cout << "Result of FireBall: " << damage1 << std::endl;
+        std::cout << "Result of WaterBall: " << damage2 << std::endl;
         Py_Finalize();
         return;
     }
