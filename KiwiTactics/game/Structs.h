@@ -1,5 +1,14 @@
 #pragma once
 #include <cstdint>
+struct SkillInfo
+{
+    int64_t id;
+    int8_t DamageType;
+    bool TargetType;
+    bool NeedSight;
+    int funcAddress;
+};
+
 
 struct CharacterInfo
 {
@@ -32,16 +41,6 @@ struct CharacterInfo
     int16_t Jump = -1;       // ÌøÔ¾Á¦
 
 };
-
-struct SkillInfo
-{
-	int64_t id;
-	int8_t DamageType;
-	bool TargetType;
-	bool NeedSight;
-	int funcAddress;
-};
-
 
 struct SpatialRelationship
 {

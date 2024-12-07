@@ -3,10 +3,13 @@
 
 // 声明 SQLite API 函数
 extern "C" {
+    typedef void sqlite3;
     int sqlite3_open(const char* filename, void** db);
     int sqlite3_exec(void* db, const char* sql, int (*callback)(void*, int, char**, char**), void* data, char** errmsg);
     int sqlite3_close(void* db);
-    void sqlite3_free(void*); 
+    void sqlite3_free(void* ptr);
+
+    #define SQLITE_OK  0
 }
 
 // 获取单例实例
@@ -101,4 +104,26 @@ int SQLiteManager::callback(void* data, int argc, char** argv, char** colName) {
     }
     std::cout << std::endl;
     return 0;
+}
+
+bool SQLiteManager::executeSelectQuery(const std::string& query, std::vector<std::vector<std::string>>& result) {
+    if (db == nullptr) {
+        std::cerr << "Database not loaded." << std::endl;
+        return false;
+    }
+
+    // 清空之前的结果
+    result.clear();
+
+    // 执行查询
+    char* errMsg = nullptr;
+    int rc = sqlite3_exec(reinterpret_cast<sqlite3*>(db), query.c_str(), callback, &result, &errMsg);
+
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+        return false;
+    }
+
+    return true;
 }

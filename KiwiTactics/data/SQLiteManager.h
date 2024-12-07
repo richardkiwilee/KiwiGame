@@ -33,6 +33,8 @@ public:
     // 执行单个 SQL 语句
     bool executeSQL(const std::string& sql);
 
+    bool executeSelectQuery(const std::string& query, std::vector<std::vector<std::string>>& result);
+
 private:
     // 私有构造函数和析构函数
     SQLiteManager();

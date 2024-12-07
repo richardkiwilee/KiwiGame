@@ -5,9 +5,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-#include "utils/call_python.h"
-#include "utils/call_lua.h"
-
+#include "data/SQLiteManager.h"
 std::string getStringByIndex(const std::string& str, size_t index) {
     std::stringstream ss(str);
     std::string word;
@@ -28,66 +26,42 @@ std::string getStringByIndex(const std::string& str, size_t index) {
 }
 void handleCommand(ArchiveManager* manager, const std::string& input) {
     std::string command = getStringByIndex(input, 0);
+    if (command == "db")
+    {
+        SQLiteManager& manager = SQLiteManager::getInstance();
+        // 加载数据库
+        manager.loadDatabase("D:\\KiwiGame\\database\\data.db");
+
+        std::vector<std::vector<std::string>> result;
+        std::string query = "SELECT * FROM Terrain";
+
+        if (manager.executeSelectQuery(query, result)) {
+            // 输出查询结果
+            for (const auto& row : result) {
+                for (const auto& cell : row) {
+                    std::cout << cell << " ";
+                }
+                std::cout << std::endl;
+            }
+        }
+        else {
+            std::cerr << "Query execution failed." << std::endl;
+        }
+        return;
+
+    }
     if (command == "test")
     {
         Py_Initialize();
         PyRun_SimpleString("import sys");
         PyRun_SimpleString("sys.path.append('.')");
-        sol::state lua;
-        lua.open_libraries(sol::lib::base);
-
         SkillManager mgr = SkillManager();
         mgr.Register(nullptr, 1, "register.py", "FireBall");
-        mgr.Register(lua, 2, "register.lua", "WaterBall");
         DamageCalcuteInfo t;
         t.Attacker.Armor = 10;
         auto _func1 = mgr.Get(1);
         double damage1 = _func1(&t);
-
-        auto _func2 = mgr.Get(2);
-        double damage2 = _func2(&t);
         std::cout << "Result of FireBall: " << damage1 << std::endl;
-        std::cout << "Result of WaterBall: " << damage2 << std::endl;
-        Py_Finalize();
-        return;
-    }
-    if (command == "testpy")
-    {
-        testPy();
-        return;
-    }
-    if (command == "testlua")
-    {
-        testLua();
-        return;
-    }
-    if (command == "reglua")
-    {
-        sol::state lua;
-        lua.open_libraries(sol::lib::base);  // 打开基本库
-        lua.set_function("add", add);  // 将 C++ 函数 add 注册到 Lua 中
-        // 运行 Lua 脚本，替换 add 函数
-        runLuaFromFile(lua, "add.lua");
-        sol::protected_function_result ret = lua["add"](3, 4);
-        // 调用 Lua 中的 add 函数
-        std::cout << "Result of add(3, 4): " << ret.begin()->as<int>() << std::endl;  // 输出 12（3 * 4）
-        return;
-    }
-    if (command == "regpy")
-    {
-        Py_Initialize();
-
-        // 设置 Python 脚本路径
-        PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append('.')");
-
-        // 注册 Python 函数
-        register_python_function("register", "A2");
-
-        // 调用动态函数
-        A1_dynamic(42); // 如果 Python 函数注册成功，将调用 Python 的 A2；否则调用 C++ 的 A1
-
-        // 关闭 Python 解释器
         Py_Finalize();
         return;
     }
