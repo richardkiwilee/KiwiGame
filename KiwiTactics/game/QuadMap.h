@@ -6,18 +6,12 @@
 #include <stdexcept>
 #include <string>
 
-// 定义地格砖块的类型 向下拓展
-enum QuadGridType {
-    Normal = 0x01,
-    Water = 0x02,
-    Lava = 0x03,
-};
 
 // 地格
 struct QuadGrid {
     uint8_t height = 0x00;         // 不处理类似拱门的空洞结构，只考虑地面高度
     uint8_t terrain = 0x00;        // 地形类型
-    uint8_t effect = 0x00;         // 地格效果 类似燃烧 浓雾等 不能共存
+    uint8_t effect = 0x00;         // 地格效果 属于空中效果 类似燃烧和浓雾不能共存
     uint64_t objectid = 0x00;      // 占用对象 包括建筑方块、单位、资源等
 
     // 序列化: 将 QuadGrid 对象的字段写入文件

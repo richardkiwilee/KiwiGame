@@ -82,3 +82,35 @@ void runLuaFromFile(sol::state& lua, const std::string& filename) {
         std::cerr << "Error running Lua script: " << e.what() << std::endl;
     }
 }
+
+void register_lua_function(lua_State* L, const std::string& func_name) {
+    // 确保 Lua 解释器已初始化
+    if (!L) {
+        std::cerr << "Lua interpreter is not initialized!" << std::endl;
+        return;
+    }
+
+    // 获取 Lua 函数
+    lua_getglobal(L, func_name.c_str());
+    if (lua_isfunction(L, -1)) {
+        // 将 Lua 函数包装为 C++ 函数
+        A1_dynamic = [L, func_name](int x) {
+            // 将参数压栈
+            lua_pushnumber(L, x);
+
+            // 调用 Lua 函数
+            if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
+                std::cerr << "Error calling Lua function: " << lua_tostring(L, -1) << std::endl;
+                lua_pop(L, 1);  // 错误处理
+            }
+            };
+
+        std::cout << "Lua function " << func_name << " registered successfully!" << std::endl;
+    }
+    else {
+        std::cerr << "Function " << func_name << " not found or not callable in Lua" << std::endl;
+    }
+
+    // 清理栈
+    lua_pop(L, 1);
+}

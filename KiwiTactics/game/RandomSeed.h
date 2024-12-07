@@ -35,6 +35,10 @@ public:
         return static_cast<int8_t>(buffer[position++]);
     }
 
+    int8_t GetPct()
+    {
+		return int8_t(GetInt8() / 255.0);
+	}
     // 获取下一个 2 字节的值，拼接到缓冲区的开始部分
     int16_t GetInt16() {
         if (position + 1 >= len) {

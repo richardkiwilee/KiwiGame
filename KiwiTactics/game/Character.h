@@ -1,4 +1,8 @@
 #include <algorithm>
+#include "Structs.h"
+#include <map>
+#include <string>
+
 enum FaceDirection { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
 enum CharacterType { PLAYER = 1, ENEMY = 2, Neutral = 3 };
 #define MAX_INT16 65535;
@@ -65,7 +69,6 @@ T clamp(T newValue, Property<T>& minValue, Property<T>& maxValue) {
     return clampedValue;
 }
 
-
 class Character
 {
 public:
@@ -77,10 +80,11 @@ public:
 	// 基础属性
     Property<int16_t> hp;
     Property<int16_t> mana;
-    Property<int16_t> stamina;
     Property<int8_t> movement;
     Property<int8_t> ap;
     Property<int16_t> armor;
+    std::map<int64_t, BuffInfo*> buffs;
+
     // 序列化: 将 QuadGridMap 对象的字段以及 QuadGridMap 数组写入文件
     void Serialize(const std::string& filename) const {
         std::ofstream ofs(filename, std::ios::binary);
@@ -109,4 +113,19 @@ public:
     void Deserialize(std::ifstream& ifs) {
     }
 
+    CharacterInfo* GetCharacterInfo()
+    {
+        CharacterInfo* info = new CharacterInfo();
+        return info;
+    }
+
+};
+
+
+// 默认技能伤害公式，在书写技能公式时，一般不使用被攻击方的抗性补正 但仍然传入了被攻击方的信息是为了方便完成例如斩杀的功能
+double _exampleDmgFormula(DamageCalcuteInfo* info) {
+    CharacterInfo attacker = info->Attacker;
+    CharacterInfo defender = info->Defender;
+    SpatialRelationship relative = info->Relative;
+    return 1.0 * info->Attacker.Strength;
 };

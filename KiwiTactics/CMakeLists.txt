@@ -4,10 +4,10 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(ARCH_DIR "x64")
 else()
     set(ARCH_DIR "x86")
-endif()
+endif() 
 
 # 递归搜索源文件
-file(GLOB_RECURSE SRC_FILES
+file(GLOB_RECURSE SRC_FILES 
     main.cpp
     version.h 
     game/*.*

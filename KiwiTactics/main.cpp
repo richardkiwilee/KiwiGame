@@ -28,6 +28,25 @@ std::string getStringByIndex(const std::string& str, size_t index) {
 }
 void handleCommand(ArchiveManager* manager, const std::string& input) {
     std::string command = getStringByIndex(input, 0);
+    if (command == "test")
+    {
+        Py_Initialize();
+        PyRun_SimpleString("import sys");
+        PyRun_SimpleString("sys.path.append('.')");
+        sol::state lua;
+        lua.open_libraries(sol::lib::base);
+
+        SkillManager mgr = SkillManager();
+        mgr.Register(nullptr, 1, "register.py", "FireBall");
+        DamageCalcuteInfo t;
+        t.Attacker.Armor = 10;
+        auto _func = mgr.Get(1);
+        double damage = _func(&t);
+        std::cout << "Result of FireBall: " << damage << std::endl;
+
+        Py_Finalize();
+        return;
+    }
     if (command == "testpy")
     {
         testPy();

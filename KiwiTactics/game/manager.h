@@ -11,6 +11,8 @@
 #include "Inventory.h"
 #include "../version.h"
 #include "../extern/ModuleManager.h"
+#include <sol/sol.hpp>
+#include "Skill.h"
 
 template <typename T>
 class ObjectsManager
@@ -54,8 +56,16 @@ public:
     ArchiveManager(std::string archive_name)
     {
         this->archive_name = archive_name;
+        L = luaL_newstate();
+        luaL_openlibs(L);
+        if (!L) {
+            std::cerr << "Lua interpreter is not initialized!" << std::endl;
+        }
     };
-    ~ArchiveManager() {};
+    ~ArchiveManager()
+    {
+        lua_close(L);
+    };
     ModuleManager* module;
 	QuadGridMap* map;
     Inventory* inventory;
@@ -64,10 +74,10 @@ public:
     ObjectsManager<Character>* emeries;
     ObjectsManager<Building>* buildings;
     RandomSeed* randomBuffer;
-    
+    lua_State* L;
     void Serialize() {
         Serialize(archive_name);
-    }
+    };
 
     void Serialize(const std::string& filename) {
         std::ofstream ofs(filename, std::ios::binary);
@@ -96,7 +106,7 @@ public:
         emeries->Serialize(ofs);
         ofs.close();
         std::cout << "Serialization successful." << std::endl;
-    }
+    };
 
     void Deserialize(const std::string& filename) {
         std::ifstream ifs(filename, std::ios::binary);
@@ -120,6 +130,6 @@ public:
 
         ifs.close();
         std::cout << "Deserialization successful." << std::endl;
-    }
+    };
 };
 
