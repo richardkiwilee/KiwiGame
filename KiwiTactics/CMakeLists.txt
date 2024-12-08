@@ -64,10 +64,12 @@ add_custom_command(TARGET ${PNAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Database
         $<TARGET_FILE_DIR:${PNAME}>/Database
-    COMMENT "Copying files from source_directory to destination_directory"
+
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Data
+        $<TARGET_FILE_DIR:${PNAME}>/Data
 
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Mods
         $<TARGET_FILE_DIR:${PNAME}>/Mods
-    COMMENT "Copying files from source_directory to destination_directory"
 )
