@@ -2,6 +2,7 @@
 #include "Structs.h"
 #include <map>
 #include <string>
+#include <functional>
 
 enum FaceDirection { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
 enum CharacterType { PLAYER = 1, ENEMY = 2, Neutral = 3 };
@@ -69,6 +70,35 @@ T clamp(T newValue, Property<T>& minValue, Property<T>& maxValue) {
     return clampedValue;
 }
 
+class EventSystem {
+public:
+    // 定义一个事件类型，事件是一个 void() 函数
+    using EventHandler = std::function<void()>;
+    // 向事件列表中添加事件处理器
+    void addEventHandler(const EventHandler& handler) {
+        eventHandlers.push_back(handler);
+    }
+    // 移除事件处理器
+    void removeEventHandler(const EventHandler& handler) {
+        // 使用 std::remove_if 和 erase 来移除匹配的事件处理器
+        auto it = std::remove_if(eventHandlers.begin(), eventHandlers.end(),
+            [&handler](const EventHandler& storedHandler) {
+                return storedHandler.target_type() == handler.target_type() &&
+                    *storedHandler.target<void()>() == *handler.target<void()>();
+            });
+
+        eventHandlers.erase(it, eventHandlers.end());
+    }
+    // 触发所有事件处理器
+    void triggerEvent() {
+        for (auto& handler : eventHandlers) {
+            handler();  // 执行事件处理器
+        }
+    }
+private:
+    std::vector<EventHandler> eventHandlers;  // 存储事件处理器
+};
+
 class Character
 {
 public:
@@ -84,6 +114,30 @@ public:
     Property<int8_t> ap;
     Property<int16_t> armor;
     std::map<int64_t, BuffInfo*> buffs;
+    EventSystem OnAttack;
+    EventSystem OnAttacked;
+    EventSystem OnTurnStart;
+    EventSystem OnTurnEnd;
+    EventSystem OnDeath;
+    void attack(Character& target) {
+        OnAttack.triggerEvent();  // 触发攻击事件
+        target.attacked(*this);  // 让目标受到攻击
+    }
+
+    void attacked(Character& attacker) {
+        OnAttacked.triggerEvent();  // 触发被攻击事件
+    }
+
+    void startTurn() {
+        OnTurnStart.triggerEvent();  // 触发回合开始事件
+    }
+
+    void endTurn() {
+        OnTurnEnd.triggerEvent();  // 触发回合结束事件
+    }
+    void death() {
+		OnDeath.triggerEvent();  // 触发死亡事件
+	}
 
     // 序列化: 将 QuadGridMap 对象的字段以及 QuadGridMap 数组写入文件
     void Serialize(const std::string& filename) const {

@@ -145,6 +145,12 @@ public:
 		}
 		this->Serialize(opened_sav);
 	};
+    
+private:
+    void EndTurn()
+    {
+        
+    };
     SQLiteManager* database = nullptr;
     SkillManager* skillmgr = nullptr;
     ModuleManager* module = nullptr;
@@ -156,7 +162,6 @@ public:
     ObjectsManager<Building>* buildings = nullptr;
     RandomSeed* randomBuffer = nullptr;
     lua_State* L = nullptr;
-private:
     void Serialize() {
         Serialize(opened_sav);
     };

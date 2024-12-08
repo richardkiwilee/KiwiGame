@@ -62,14 +62,6 @@ void handleCommand(ArchiveManager* manager, const std::string& input) {
         std::cout << "Goodbye!" << std::endl;
         exit(0);
     }
-    if (command == "print") {
-        std::string tar = getStringByIndex(input, 1);
-        if (tar == "map") {
-			manager->map->PrintMap();
-			return;
-		}
-        return;
-    }
     std::cout << "Unknown command: " << command << std::endl;
 }
 

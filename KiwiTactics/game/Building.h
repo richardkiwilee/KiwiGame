@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 
+
 class Building
 {
 public:
@@ -23,7 +24,7 @@ public:
         ofs.write(reinterpret_cast<const char*>(&building_id), sizeof(building_id));
         ofs.write(reinterpret_cast<const char*>(&position_x), sizeof(position_x));
         ofs.write(reinterpret_cast<const char*>(&position_y), sizeof(position_y));
-        ofs.write(reinterpret_cast<const char*>(&building_direction), sizeof(building_direction));
+        ofs.write(reinterpret_cast<const char*>(&rotate), sizeof(rotate));
     }
 
     // Deserialize from a file
@@ -41,13 +42,13 @@ public:
         ifs.read(reinterpret_cast<char*>(&building_id), sizeof(building_id));
         ifs.read(reinterpret_cast<char*>(&position_x), sizeof(position_x));
         ifs.read(reinterpret_cast<char*>(&position_y), sizeof(position_y));
-        ifs.read(reinterpret_cast<char*>(&building_direction), sizeof(building_direction));
+        ifs.read(reinterpret_cast<char*>(&rotate), sizeof(rotate));
     }
 
 private:
     int64_t building_id = 0;
     int8_t position_x = 0;
     int8_t position_y = 0;
-    int8_t building_direction = 0;
+    int8_t rotate = 0;
 };
 

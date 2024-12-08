@@ -70,6 +70,7 @@ public:
 
 private:
 	std::unordered_map<int64_t, std::function<double(DamageCalcuteInfo*)>> SkillMap;
+	std::unordered_map<int64_t, SkillInfo*> SkillInformation;
     PyObject* convert_damage_info_to_py(DamageCalcuteInfo* info) {
         PyObject* damage_info = PyDict_New();
         PyObject* attacker = PyDict_New();
