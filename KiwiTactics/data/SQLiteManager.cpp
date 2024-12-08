@@ -84,6 +84,27 @@ bool SQLiteManager::executeSQLFile(const std::string& sqlFilePath) {
     return executeSQL(sql);
 }
 
+// 执行文件夹中的所有sql文件
+bool SQLiteManager::executeFolder(const std::string& folderPath) {
+    try {
+        // 遍历目录及其子目录
+        for (const auto& entry : fs::recursive_directory_iterator(folderPath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".sql") {
+                std::cout << "Found SQL file: " << entry.path() << std::endl;
+                if (!executeSQLFile(entry.path().string())) {
+                    std::cerr << "Failed to execute SQL file: " << entry.path() << std::endl;
+                    return false;
+                }
+            }
+        }
+    }
+    catch (const fs::filesystem_error& e) {
+        std::cerr << "Error accessing folder: " << e.what() << std::endl;
+        return false;
+    }
+    return true;
+}
+
 // 执行单个 SQL 语句
 bool SQLiteManager::executeSQL(const std::string& sql) {
     char* errorMessage = nullptr;

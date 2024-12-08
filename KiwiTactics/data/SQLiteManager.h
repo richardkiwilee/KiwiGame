@@ -30,6 +30,9 @@ public:
     // 执行 SQL 文件中的所有语句
     bool executeSQLFile(const std::string& sqlFilePath);
 
+    // 执行文件夹中的所有 SQL 文件
+    bool executeFolder(const std::string& folderPath);
+
     // 执行单个 SQL 语句
     bool executeSQL(const std::string& sql);
 

@@ -51,11 +51,14 @@ public:
     uint8_t version = 1;        // 地图版本
     uint8_t row = 0;            // 地图的行数 (高度)
     uint8_t col = 0;            // 地图的列数 (宽度)
+    int64_t seed = 0;           // 随机种子
     std::vector<std::vector<QuadGrid>> gridMap;  // 组成地图的二维网格
 
-    QuadGridMap(uint8_t version, uint8_t row, uint8_t col)
+    QuadGridMap(uint8_t version, uint8_t row, uint8_t col, int64_t seed)
         : version(version), row(row), col(col) {
         gridMap.resize(row, std::vector<QuadGrid>(col));  // 行数为 row，列数为 col
+        seed = seed;
+        _randomization();
     }
 
     // 获取指定位置的 QuadGrid 指针
@@ -82,6 +85,7 @@ public:
         ofs.write(reinterpret_cast<const char*>(&version), sizeof(version));
         ofs.write(reinterpret_cast<const char*>(&row), sizeof(row));
         ofs.write(reinterpret_cast<const char*>(&col), sizeof(col));
+        ofs.write(reinterpret_cast<const char*>(&seed), sizeof(seed));
         // 遍历并序列化二维网格
         for (size_t i = 0; i < row; ++i) {
             for (size_t j = 0; j < col; ++j) {
@@ -106,6 +110,7 @@ public:
         ifs.read(reinterpret_cast<char*>(&version), sizeof(version));
         ifs.read(reinterpret_cast<char*>(&row), sizeof(row));
         ifs.read(reinterpret_cast<char*>(&col), sizeof(col));
+        ifs.read(reinterpret_cast<char*>(&seed), sizeof(seed));
         // 调整 gridMap 的大小
         gridMap.resize(row, std::vector<QuadGrid>(col));
         // 遍历并反序列化二维网格
@@ -124,4 +129,17 @@ public:
             std::cout << std::endl;
         }
     }
+private:
+    void _randomization()
+    {
+        for (uint8_t i = 0; i < 5; ++i) {
+            for (uint8_t j = 0; j < 5; ++j) {
+                gridMap[i][j].height = i + j;
+                gridMap[i][j].terrain = (i + j) % 3;
+                gridMap[i][j].effect = (i + j) % 2;
+                gridMap[i][j].objectid = 1234567890123456 + (i * 10 + j);
+            }
+        }
+    }
+
 };

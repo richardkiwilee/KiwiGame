@@ -1,4 +1,4 @@
-set(PNAME KiwiTactics)
+set(PNAME test)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(ARCH_DIR "x64")
@@ -8,13 +8,7 @@ endif()
 
 # 递归搜索源文件
 file(GLOB_RECURSE SRC_FILES 
-    main.cpp 
-    version.h 
-    game/*.*
-    data/*.*
-    endian/*.*
-    extern/*.*
-    plugin/*.*
+    main.cpp
 )
 
 # 为源文件生成源组
@@ -61,13 +55,9 @@ add_custom_command(TARGET ${PNAME} POST_BUILD
     "${CMAKE_SOURCE_DIR}/dll/${ARCH_DIR}/sqlite3.lib"
     "$<TARGET_FILE_DIR:${PNAME}>/sqlite3.lib"
 
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/Database
-        $<TARGET_FILE_DIR:${PNAME}>/Database
-    COMMENT "Copying files from source_directory to destination_directory"
+   # 执行复制命令，确保路径格式正确
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/scripts/register.lua"
+    "$<TARGET_FILE_DIR:${PNAME}>/register.lua"
 
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/Mods
-        $<TARGET_FILE_DIR:${PNAME}>/Mods
-    COMMENT "Copying files from source_directory to destination_directory"
 )

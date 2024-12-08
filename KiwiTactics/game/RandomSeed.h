@@ -51,7 +51,18 @@ public:
 
         return result;
     }
-
+    int64_t GetInt64()
+    {
+        int8_t c1 = GetInt8();
+        int8_t c2 = GetInt8();
+        int8_t c3 = GetInt8();
+        int8_t c4 = GetInt8();
+        int8_t c5 = GetInt8();
+        int8_t c6 = GetInt8();
+        int8_t c7 = GetInt8();
+        int8_t c8 = GetInt8();
+        return ((int64_t)c1 << 56) | ((int64_t)c2 << 48) | ((int64_t)c3 << 40) | ((int64_t)c4 << 32) | ((int64_t)c5 << 24) | ((int64_t)c6 << 16) | ((int64_t)c7 << 8) | c8;
+    }
     // 重置位置，回到开头
     void Reset() {
         position = 0;

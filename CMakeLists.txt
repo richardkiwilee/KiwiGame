@@ -23,3 +23,4 @@ set(CMAKE_RC_FLAGS ${rc_flags})
 
 add_subdirectory(KiwiTactics)
 add_subdirectory(Demo)
+add_subdirectory(test-lua)

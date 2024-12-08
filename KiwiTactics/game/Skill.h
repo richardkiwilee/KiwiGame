@@ -56,6 +56,17 @@ public:
 			std::cerr << "Unsupported script file format: " << script_name << std::endl;
 		}
 	}
+    void RegisterFromVector(lua_State* L, std::vector<int64_t> skillid, std::vector<std::string> script, std::vector<std::string> func) {
+        auto ids = skillid.begin();
+        auto scripts = script.begin();
+        auto funcs = func.begin();
+        while (ids != skillid.end() && scripts != script.end() && funcs != func.end()) {
+            Register(L, *ids, *scripts, *funcs);
+            ++ids;
+            ++scripts;
+            ++funcs;
+        }
+    }
 
 private:
 	std::unordered_map<int64_t, std::function<double(DamageCalcuteInfo*)>> SkillMap;
@@ -181,4 +192,5 @@ private:
         }
         Py_XDECREF(pModule);
     }
+
 };
