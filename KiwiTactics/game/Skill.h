@@ -5,7 +5,7 @@
 #include <pybind11/embed.h>  // pybind11 嵌入 Python 的头文件
 #include <pybind11/pybind11.h>
 #include "Structs.h"
-
+#include "../extern/Logger.h"
 namespace py = pybind11;
 
 const int8_t DAMAGE_TYPE_PHYSICAL = 1;
@@ -25,6 +25,10 @@ inline bool ends_with(const std::string& script_name, const std::string& suffix)
         script_name.compare(script_name.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
+double _defaultSkill(DamageCalcuteInfo* info) {
+	return 0.0;
+}
+
 class SkillManager
 {
 public:
@@ -40,7 +44,8 @@ public:
             return SkillMap[skillId];
         }
         else {
-            std::cerr << "ID " << skillId << " not found in SkillMap!" << std::endl;
+            Logger::getInstance().Error("ID " + std::to_string(skillId) + " not found in SkillMap.");
+            return _defaultSkill;
         }
         return SkillMap[skillId];
 	}
@@ -53,7 +58,7 @@ public:
 			Register_py(id, script_name, func_name);
 		}
 		else {
-			std::cerr << "Unsupported script file format: " << script_name << std::endl;
+            Logger::getInstance().Error("Unsupported script file format: " + script_name);
 		}
 	}
     void RegisterFromVector(lua_State* L, std::vector<int64_t> skillid, std::vector<std::string> script, std::vector<std::string> func) {
@@ -146,7 +151,7 @@ private:
     }
     void Register_py(int64_t id, const std::string& script_name, const std::string& func_name) {
         if (!Py_IsInitialized()) {
-            std::cerr << "Python interpreter is not initialized!" << std::endl;
+            Logger::getInstance().Error("Python interpreter is not initialized!");
             return;
         }
 
@@ -181,15 +186,15 @@ private:
                     Py_XDECREF(damage_info);  // 释放 damage_info
                     return ret;
                     };
-                std::cout << "Python function '" << func_name << "' registered successfully!" << std::endl;
+                Logger::getInstance().Info("Python function  '" + func_name + "' registered successfully!");
             }
             else {
-                std::cerr << "Function '" << func_name << "' not found or not callable in Python script." << std::endl;
+                Logger::getInstance().Error("Function '" + func_name + "' not found or not callable in Python script.");
             }
             Py_XDECREF(pFunc);
         }
         else {
-            std::cerr << "Failed to load Python script: " << script_name << std::endl;
+            Logger::getInstance().Error("Failed to load Python script: " + script_name );
         }
         Py_XDECREF(pModule);
     }

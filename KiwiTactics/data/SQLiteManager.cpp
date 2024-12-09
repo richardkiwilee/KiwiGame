@@ -1,6 +1,8 @@
 #include "SQLiteManager.h"
 #include <fstream>
-
+#include "../extern/Logger.h"
+#include <iostream>
+#include <string>
 // 声明 SQLite API 函数
 extern "C" {
     typedef void sqlite3;
@@ -33,12 +35,12 @@ bool SQLiteManager::loadDatabase(const std::string& dbPath) {
         sqlite3_close(db);  // 关闭现有数据库
     }
     if (sqlite3_open(dbPath.c_str(), &db) != 0) {
-        std::cerr << "Failed to open database." << std::endl;
+        Logger::getInstance().Error("Failed to open database: " + dbPath);
         db = nullptr;
         return false;
     }
     currentDBPath = dbPath;
-    std::cout << "Loaded database: " << dbPath << std::endl;
+    Logger::getInstance().Info("Loaded database: " + dbPath);
     return true;
 }
 
@@ -56,16 +58,17 @@ bool SQLiteManager::loadAllDatabasesInDirectory(const std::string& directoryPath
 // 保存当前数据库到指定目录
 bool SQLiteManager::saveDatabase(const std::string& targetDirectory) {
     if (currentDBPath.empty()) {
-        std::cerr << "No database loaded to save." << std::endl;
+        Logger::getInstance().Error("No database loaded to save.");
         return false;
     }
     fs::path targetPath = fs::path(targetDirectory) / fs::path(currentDBPath).filename();
     try {
         fs::copy(currentDBPath, targetPath, fs::copy_options::overwrite_existing);
-        std::cout << "Database saved to: " << targetPath << std::endl;
+        Logger::getInstance().Info("Database saved to: " + targetPath.string());
         return true;
     } catch (const fs::filesystem_error& e) {
-        std::cerr << "Error saving database: " << e.what() << std::endl;
+        std::string error_message(e.what());
+        Logger::getInstance().Error("Error saving database: " + error_message);
         return false;
     }
 }
@@ -74,7 +77,7 @@ bool SQLiteManager::saveDatabase(const std::string& targetDirectory) {
 bool SQLiteManager::executeSQLFile(const std::string& sqlFilePath) {
     std::ifstream sqlFile(sqlFilePath);
     if (!sqlFile.is_open()) {
-        std::cerr << "Failed to open SQL file: " << sqlFilePath << std::endl;
+        Logger::getInstance().Error("Failed to open SQL file: " + sqlFilePath);
         return false;
     }
 
@@ -90,16 +93,17 @@ bool SQLiteManager::executeFolder(const std::string& folderPath) {
         // 遍历目录及其子目录
         for (const auto& entry : fs::recursive_directory_iterator(folderPath)) {
             if (entry.is_regular_file() && entry.path().extension() == ".sql") {
-                std::cout << "Found SQL file: " << entry.path() << std::endl;
+                Logger::getInstance().Info("Found SQL file: " + entry.path().string());
                 if (!executeSQLFile(entry.path().string())) {
-                    std::cerr << "Failed to execute SQL file: " << entry.path() << std::endl;
+                    Logger::getInstance().Error("Failed to execute SQL file: " + entry.path().string());
                     return false;
                 }
             }
         }
     }
     catch (const fs::filesystem_error& e) {
-        std::cerr << "Error accessing folder: " << e.what() << std::endl;
+        std::string error_message(e.what());
+        Logger::getInstance().Error("Error accessing folder: " + error_message);
         return false;
     }
     return true;
@@ -109,27 +113,27 @@ bool SQLiteManager::executeFolder(const std::string& folderPath) {
 bool SQLiteManager::executeSQL(const std::string& sql) {
     char* errorMessage = nullptr;
     if (sqlite3_exec(db, sql.c_str(), callback, nullptr, &errorMessage) != 0) {
-        std::cerr << "SQL error: " << errorMessage << std::endl;
+        std::string e(errorMessage);
+        Logger::getInstance().Error("SQL error: " + e);
         sqlite3_free(errorMessage);
         return false;
     }
-
-    std::cout << "SQL executed successfully." << std::endl;
+    Logger::getInstance().Info("SQL executed successfully.");
     return true;
 }
 
 // 回调函数，用于处理 SQL 查询结果
 int SQLiteManager::callback(void* data, int argc, char** argv, char** colName) {
     for (int i = 0; i < argc; i++) {
-        std::cout << colName[i] << " = " << (argv[i] ? argv[i] : "NULL") << std::endl;
+        // std::cout << colName[i] << " = " << (argv[i] ? argv[i] : "NULL") << std::endl;
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
     return 0;
 }
 
 bool SQLiteManager::executeSelectQuery(const std::string& query, std::vector<std::vector<std::string>>& result) {
     if (db == nullptr) {
-        std::cerr << "Database not loaded." << std::endl;
+        Logger::getInstance().Error("Database not loaded.");
         return false;
     }
 
@@ -141,7 +145,7 @@ bool SQLiteManager::executeSelectQuery(const std::string& query, std::vector<std
     int rc = sqlite3_exec(reinterpret_cast<sqlite3*>(db), query.c_str(), callback, &result, &errMsg);
 
     if (rc != SQLITE_OK) {
-        std::cerr << "SQL error: " << errMsg << std::endl;
+        Logger::getInstance().Error("SQL error: " + std::string(errMsg));
         sqlite3_free(errMsg);
         return false;
     }

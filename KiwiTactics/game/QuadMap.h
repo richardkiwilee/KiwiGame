@@ -61,6 +61,8 @@ public:
         _randomization();
     }
 
+    QuadGridMap() {    };
+
     // 获取指定位置的 QuadGrid 指针
     QuadGrid* Get(uint8_t x, uint8_t y)
     {
@@ -73,7 +75,7 @@ public:
     void Serialize(const std::string& filename) const {
         std::ofstream ofs(filename, std::ios::binary);
         if (!ofs.is_open()) {
-            std::cerr << "Error opening file for serialization!" << std::endl;
+            Logger::getInstance().Error("Error opening file for serialization!");
             return;
         }
         this->Serialize(ofs);
@@ -98,7 +100,7 @@ public:
     void Deserialize(const std::string& filename) {
         std::ifstream ifs(filename, std::ios::binary);
         if (!ifs.is_open()) {
-            std::cerr << "Error opening file for deserialization!" << std::endl;
+            Logger::getInstance().Error("Error opening file for deserialization!");
             return;
         }
         this->Deserialize(ifs);

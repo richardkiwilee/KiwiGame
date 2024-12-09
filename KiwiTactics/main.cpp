@@ -42,7 +42,8 @@ void handleCommand(ArchiveManager* manager, const std::string& input) {
             }
         }
         else {
-            std::cerr << "Query execution failed." << std::endl;
+            std::cout << "Query execution failed." << std::endl;
+
         }
         return;
 
@@ -67,7 +68,8 @@ void handleCommand(ArchiveManager* manager, const std::string& input) {
 
 int main() {
     ArchiveManager manager = ArchiveManager();
-    
+    manager.Open("test");
+    manager.Close();
     std::string input;
     while (std::cin && !(std::getline(std::cin, input) && input == "quit")) {
         handleCommand(&manager, input);
