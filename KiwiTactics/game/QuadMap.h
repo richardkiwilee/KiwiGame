@@ -134,8 +134,8 @@ public:
 private:
     void _randomization()
     {
-        for (uint8_t i = 0; i < 5; ++i) {
-            for (uint8_t j = 0; j < 5; ++j) {
+        for (uint8_t i = 0; i < 50; ++i) {
+            for (uint8_t j = 0; j < 50; ++j) {
                 gridMap[i][j].height = i + j;
                 gridMap[i][j].terrain = (i + j) % 3;
                 gridMap[i][j].effect = (i + j) % 2;

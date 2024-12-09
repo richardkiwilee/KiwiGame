@@ -44,6 +44,10 @@ target_link_options(${PNAME} PRIVATE /NODEFAULTLIB:LIBCMT)
 target_link_libraries(${PNAME} PRIVATE "${CMAKE_SOURCE_DIR}/dll/x64/sqlite3.lib")
 target_link_libraries(${PNAME} PRIVATE "${LUA_DIR}/lua54.lib")
 
+set_target_properties(${PNAME} PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PNAME}>"
+)
+
 # 可选：在构建后复制共享库（如 DLL）到目标输出目录
 add_custom_command(TARGET ${PNAME} POST_BUILD
     # 打印即将执行的命令
