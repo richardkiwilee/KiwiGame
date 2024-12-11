@@ -59,10 +59,10 @@ int main() {
     }
     lua_getglobal(L, func_name.c_str()); // anonymity function at the top of the stack
     if (lua_isfunction(L, -1)) {
-        
-        SkillMap[id] = [L, func_name](ComplexData* info) -> double {
+        int func = luaL_ref(L, LUA_REGISTRYINDEX);
+        SkillMap[id] = [L, func](ComplexData* info) -> double {
+            lua_rawgeti(L, LUA_REGISTRYINDEX, func); // get function
             stack_struct(L, *info);
-            // print table here, values are correct
             if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
                 std::cerr << "Error calling Lua function: " << lua_tostring(L, -1) << std::endl;
                 lua_pop(L, 1);
@@ -77,13 +77,33 @@ int main() {
             }
             lua_pop(L, 1);
             return result;
+
             };
+        // 错误方法：
+        //SkillMap[id] = [L, func_name](ComplexData* info) -> double {
+        //    stack_struct(L, *info);
+        //    // print table here, values are correct
+        //    if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
+        //        std::cerr << "Error calling Lua function: " << lua_tostring(L, -1) << std::endl;
+        //        lua_pop(L, 1);
+        //        return 0.0;
+        //    }
+        //    double result = 0.0;
+        //    if (lua_isnumber(L, -1)) {
+        //        result = lua_tonumber(L, -1);
+        //    }
+        //    else {
+        //        std::cerr << "Lua function did not return a number!" << std::endl;
+        //    }
+        //    lua_pop(L, 1);
+        //    return result;
+        //    };
         std::cout << "Lua function " << func_name << " registered successfully!" << std::endl;
     }
     else {
         std::cerr << "Function " << func_name << " not found or not callable in Lua" << std::endl;
     }
-    lua_pop(L, 1);
+    // lua_pop(L, 1);   // 错误方法
 
     ComplexData data = { 1, "example", {10, 3.14f} };
 

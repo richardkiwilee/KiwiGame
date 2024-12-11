@@ -4,6 +4,7 @@
 #include <functional>
 #include <pybind11/embed.h>  // pybind11 嵌入 Python 的头文件
 #include <pybind11/pybind11.h>
+#include <sol/sol.hpp>
 #include "Structs.h"
 #include "../extern/Logger.h"
 namespace py = pybind11;
@@ -28,6 +29,189 @@ inline bool ends_with(const std::string& script_name, const std::string& suffix)
 double _defaultSkill(DamageCalcuteInfo* info) {
 	return 0.0;
 }
+
+inline void push_CharacterInfo_to_lua(lua_State* L, CharacterInfo* info, std::string name)
+{
+    // Push Attacker to Lua table
+    lua_pushstring(L, name.c_str());
+    lua_newtable(L);  // 创建 Attacker 表
+    std::cout << "Pushed " << name << " table" << std::endl;
+    lua_pushstring(L, "id");
+    lua_pushinteger(L, info->id);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".id: " << info->id << std::endl;
+
+    lua_pushstring(L, "position_x");
+    lua_pushinteger(L, info->position_x);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".position_x: " << info->position_x << std::endl;
+
+    lua_pushstring(L, "position_y");
+    lua_pushinteger(L, info->position_y);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".position_y: " << info->position_y << std::endl;
+
+    lua_pushstring(L, "position_height");
+    lua_pushinteger(L, info->position_height);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".position_height: " << info->position_height << std::endl;
+
+    lua_pushstring(L, "direction");
+    lua_pushinteger(L, info->direction);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".direction: " << info->direction << std::endl;
+
+    lua_pushstring(L, "MaxHealth");
+    lua_pushinteger(L, info->MaxHealth);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".MaxHealth: " << info->MaxHealth << std::endl;
+
+    lua_pushstring(L, "Health");
+    lua_pushinteger(L, info->Health);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Health: " << info->Health << std::endl;
+
+    lua_pushstring(L, "MaxMana");
+    lua_pushinteger(L, info->MaxMana);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".MaxMana: " << info->MaxMana << std::endl;
+
+    lua_pushstring(L, "Mana");
+    lua_pushinteger(L, info->Mana);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Mana: " << info->Mana << std::endl;
+
+    lua_pushstring(L, "MaxArmor");
+    lua_pushinteger(L, info->MaxArmor);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".MaxArmor: " << info->MaxArmor << std::endl;
+
+    lua_pushstring(L, "Armor");
+    lua_pushinteger(L, info->Armor);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Armor: " << info->Armor << std::endl;
+
+    lua_pushstring(L, "MaxActionPoint");
+    lua_pushinteger(L, info->MaxActionPoint);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".MaxActionPoint: " << info->MaxActionPoint << std::endl;
+
+    lua_pushstring(L, "ActionPoint");
+    lua_pushinteger(L, info->ActionPoint);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".ActionPoint: " << info->ActionPoint << std::endl;
+
+    lua_pushstring(L, "MaxMovement");
+    lua_pushinteger(L, info->MaxMovement);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".MaxMovement: " << info->MaxMovement << std::endl;
+
+    lua_pushstring(L, "Movement");
+    lua_pushinteger(L, info->Movement);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Movement: " << info->Movement << std::endl;
+
+    lua_pushstring(L, "Strength");
+    lua_pushinteger(L, info->Strength);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Strength: " << info->Strength << std::endl;
+
+    lua_pushstring(L, "PhyDef");
+    lua_pushinteger(L, info->PhyDef);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".PhyDef: " << info->PhyDef << std::endl;
+
+    lua_pushstring(L, "Intelligence");
+    lua_pushinteger(L, info->Intelligence);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Intelligence: " << info->Intelligence << std::endl;
+
+    lua_pushstring(L, "MagDef");
+    lua_pushinteger(L, info->MagDef);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".MagDef: " << info->MagDef << std::endl;
+
+    lua_pushstring(L, "Dexterity");
+    lua_pushinteger(L, info->Dexterity);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Dexterity: " << info->Dexterity << std::endl;
+
+    lua_pushstring(L, "CriticalRate");
+    lua_pushinteger(L, info->CriticalRate);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".CriticalRate: " << info->CriticalRate << std::endl;
+
+    lua_pushstring(L, "CriticalStrength");
+    lua_pushinteger(L, info->CriticalStrengh);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".CriticalStrength: " << info->CriticalStrengh << std::endl;
+
+    lua_pushstring(L, "Luck");
+    lua_pushinteger(L, info->Luck);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Luck: " << info->Luck << std::endl;
+
+    lua_pushstring(L, "Will");
+    lua_pushinteger(L, info->Will);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Will: " << info->Will << std::endl;
+
+    lua_pushstring(L, "HitRate");
+    lua_pushinteger(L, info->HitRate);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".HitRate: " << info->HitRate << std::endl;
+
+    lua_pushstring(L, "Evasion");
+    lua_pushinteger(L, info->Evasion);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Evasion: " << info->Evasion << std::endl;
+
+    lua_pushstring(L, "Jump");
+    lua_pushinteger(L, info->Jump);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".Jump: " << info->Jump << std::endl;
+
+    lua_settable(L, -3);  // 将 Attacker 表插入 DamageCalcuteInfo 表
+    std::cout << "Pushed " << name << " to DamageCalcuteInfo table" << std::endl;
+
+}
+inline void push_SpatialRelationship_to_lua(lua_State* L, SpatialRelationship* info, std::string name)
+{
+    // 将 Relative 转换为 Lua 表
+    lua_pushstring(L, name.c_str());
+    lua_newtable(L);  // 创建 Relative 表
+
+    lua_pushstring(L, "inSight");
+    lua_pushboolean(L, info->inSight);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".inSight: " << info->inSight << std::endl;
+    lua_pushstring(L, "inAttackRange");
+    lua_pushboolean(L, info->inAttackRange);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".inAttackRange: " << info->inAttackRange << std::endl;
+    lua_pushstring(L, "isBackStrike");
+    lua_pushboolean(L, info->isBackStrike);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".isBackStrike: " << info->isBackStrike << std::endl;
+    lua_pushstring(L, "isSideStrike");
+    lua_pushboolean(L, info->isSideStrike);
+    lua_settable(L, -3);
+    std::cout << "Pushed " << name << ".isSideStrike: " << info->isSideStrike << std::endl;
+
+    // lua_settable(L, -3);
+}
+inline void push_damage_info_to_lua_(lua_State* L, DamageCalcuteInfo* info) {
+    // 创建一个新的表来表示 DamageCalcuteInfo
+    lua_newtable(L);
+    push_CharacterInfo_to_lua(L, &info->Attacker, "Attacker");
+    push_CharacterInfo_to_lua(L, &info->Defender, "Defender");
+    push_SpatialRelationship_to_lua(L, &info->Relative, "Relative");
+    // lua_settable(L, -1);    // Lua after push info: 1
+    // lua_settable(L, -2);    // crash
+    lua_settable(L, -3);    // Lua after push info: 1 栈顶table
+    // lua_settable(L, -4);    // crash
+}
+
 
 class SkillManager
 {
@@ -197,6 +381,42 @@ private:
             Logger::getInstance().Error("Failed to load Python script: " + script_name );
         }
         Py_XDECREF(pModule);
-    }
+    }    
+    void Register_lua(lua_State* L, int64_t id, const std::string& script_name, const std::string& func_name)
+    {
+        if (!L) {
+            Logger::getInstance().Error("Lua interpreter is not initialized!");
+        }
+        if (luaL_dofile(L, script_name.c_str()) != LUA_OK) {
+            Logger::getInstance().Error("Error loading Lua script: " + std::string(lua_tostring(L, -1)));
+            lua_pop(L, 1);
+        }
+        lua_getglobal(L, func_name.c_str()); // anonymity function at the top of the stack
+        if (lua_isfunction(L, -1)) {
+            int func = luaL_ref(L, LUA_REGISTRYINDEX);
+            SkillMap[id] = [L, func](DamageCalcuteInfo* info) -> double {
+                lua_rawgeti(L, LUA_REGISTRYINDEX, func); // get function
+                push_damage_info_to_lua_(L, info);
+                if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
+                    Logger::getInstance().Error("Error calling Lua function: " + std::string(lua_tostring(L, -1)));
+                    lua_pop(L, 1);
+                    return 0.0;
+                }
+                double result = 0.0;
+                if (lua_isnumber(L, -1)) {
+                    result = lua_tonumber(L, -1);
+                }
+                else {
+                    Logger::getInstance().Error("Lua function did not return a number!");
+                }
+                lua_pop(L, 1);
+                return result;
 
+                };
+            Logger::getInstance().Info("Lua function  '" + func_name + "' registered successfully!");
+        }
+        else {
+            Logger::getInstance().Error("Function '" + func_name + "' not found or not callable in Lua script.");
+        }
+    };
 };
