@@ -1,0 +1,21 @@
+{
+    "cmake.configureSettings": {
+        "CMAKE_BUILD_TYPE": "Release"
+    },
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.defaultVariants": {
+        "buildType": {
+            "default": "release"
+        }
+    },
+    "cmake.configureArgs": [
+        "-DCMAKE_BUILD_TYPE=Release"
+    ],
+    "cmake.buildArgs": [
+        "--config", "Release"
+    ],
+    "cmake.generator": "Visual Studio 17 2022",
+    "cmake.preferredGenerators": [
+        "Visual Studio 17 2022"
+    ]
+} 

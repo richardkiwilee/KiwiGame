@@ -4,7 +4,7 @@
 #include <cstring>
 #include <unordered_map>
 #include <string>
-#include <sol/sol.hpp>      // lua依赖
+#include <sol/sol.hpp>      // lua渚濊禆
 #include "extern/Logger.h"
 #include "data/SQLiteManager.h"
 #include "../version.h"
@@ -69,7 +69,7 @@ public:
     void Open(std::string name)
 	{
         if (!fs::exists("Saves")) {
-            // 如果目录不存在，则创建目录
+            // 濡傛灉鐩綍涓嶅瓨鍦ㄥ垯鍒涘缓鐩綍
             if (fs::create_directory("Saves")) {
                 Logger::getInstance().Info("Create Saves folder success.");
             }
