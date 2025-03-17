@@ -8,17 +8,17 @@ std::string getStringByIndex(const std::string& str, size_t index) {
     std::string word;
     std::vector<std::string> words;
 
-    // Ê¹ÓÃstringstream°´¿Õ¸ñ·Ö¸î×Ö·û´®
+    // ä½¿ç”¨stringstreamæŒ‰ç©ºæ ¼åˆ†å‰²å­—ç¬¦ä¸²
     while (ss >> word) {
         words.push_back(word);
     }
 
-    // ¼ì²éË÷ÒıÊÇ·ñÓĞĞ§
+    // æ£€æŸ¥ç´¢å¼•æ˜¯å¦æœ‰æ•ˆ
     if (index < words.size()) {
         return words[index];
     }
     else {
-        return ""; // ·µ»Ø¿Õ×Ö·û´®±íÊ¾Ë÷ÒıÎŞĞ§
+        return ""; // è¿”å›ç©ºå­—ç¬¦ä¸²è¡¨ç¤ºç´¢å¼•æ— æ•ˆ
     }
 }
 void handleCommand(ArchiveManager* manager, const std::string& input) {
@@ -26,14 +26,14 @@ void handleCommand(ArchiveManager* manager, const std::string& input) {
     if (command == "db")
     {
         SQLiteManager& manager = SQLiteManager::getInstance();
-        // ¼ÓÔØÊı¾İ¿â
+        // åŠ è½½æ•°æ®åº“
         manager.loadDatabase("D:\\KiwiGame\\database\\data.db");
 
         std::vector<std::vector<std::string>> result;
         std::string query = "SELECT * FROM Terrain";
 
         if (manager.executeSelectQuery(query, result)) {
-            // Êä³ö²éÑ¯½á¹û
+            // è¾“å‡ºæŸ¥è¯¢ç»“æœ
             for (const auto& row : result) {
                 for (const auto& cell : row) {
                     std::cout << cell << " ";
