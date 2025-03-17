@@ -7,14 +7,14 @@
 
 class Logger {
 public:
-    // »ñÈ¡µ¥ÀýÊµÀý
+    // èŽ·å–å•ä¾‹å®žä¾‹
     static Logger& getInstance()
     {
         static Logger instance;
         return instance;
     };
 
-    // ½ûÖ¹¿½±´¹¹ÔìºÍ¸³Öµ²Ù×÷·û
+    // ç¦æ­¢æ‹·è´æž„é€ å’Œèµ‹å€¼æ“ä½œç¬¦
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
 
@@ -67,8 +67,8 @@ public:
         if (sav_file_logger == nullptr)
         {
             sav_file_logger = spdlog::basic_logger_mt("sav_file_logger", "logs/" + name + ".log");
-            sav_file_logger->set_level(spdlog::level::debug); // ÉèÖÃÎÄ¼þÈÕÖ¾¼¶±ð
-            sav_file_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v"); // ÉèÖÃÈÕÖ¾¸ñÊ½
+            sav_file_logger->set_level(spdlog::level::debug); // è®¾ç½®æ–‡ä»¶æ—¥å¿—çº§åˆ«
+            sav_file_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v"); // è®¾ç½®æ—¥å¿—æ ¼å¼
         }
     };
 
@@ -82,15 +82,15 @@ public:
 	};
 
 private:
-    // Ë½ÓÐ¹¹Ôìº¯ÊýºÍÎö¹¹º¯Êý
+    // ç§æœ‰æž„é€ å‡½æ•°å’Œæžæž„å‡½æ•°
     Logger()
     {
         console = spdlog::stdout_color_mt("console");
-        console->set_level(spdlog::level::debug); // ÉèÖÃÈÕÖ¾¼¶±ð
-        console->set_pattern("[%Y-%m-%d %H:%M:%S] [%-5l] %v"); // ÉèÖÃÈÕÖ¾¸ñÊ½
+        console->set_level(spdlog::level::debug); // è®¾ç½®æ—¥å¿—çº§åˆ«
+        console->set_pattern("[%Y-%m-%d %H:%M:%S] [%-5l] %v"); // è®¾ç½®æ—¥å¿—æ ¼å¼
         system_file_logger = spdlog::basic_logger_mt("system_file_logger", "logs/system.log");
-        system_file_logger->set_level(spdlog::level::debug); // ÉèÖÃÎÄ¼þÈÕÖ¾¼¶±ð
-        system_file_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v"); // ÉèÖÃÈÕÖ¾¸ñÊ½
+        system_file_logger->set_level(spdlog::level::debug); // è®¾ç½®æ–‡ä»¶æ—¥å¿—çº§åˆ«
+        system_file_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v"); // è®¾ç½®æ—¥å¿—æ ¼å¼
     };
     ~Logger() {};
     std::shared_ptr<spdlog::logger> console = nullptr;
