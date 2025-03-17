@@ -54,8 +54,8 @@ public:
             }
         }
 
-        skillmgr->Register(nullptr, 1, "register.py", "FireBall");
-
+        // skillmgr = new SkillManager();
+        // skillmgr->Register(nullptr, 1, "register.py", "FireBall");
         return;
             
     };

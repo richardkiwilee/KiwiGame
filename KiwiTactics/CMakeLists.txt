@@ -76,4 +76,9 @@ add_custom_command(TARGET ${PNAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Mods
         $<TARGET_FILE_DIR:${PNAME}>/Mods
+
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/scripts/register.py"
+    "$<TARGET_FILE_DIR:${PNAME}>/register.py"
+
 )
