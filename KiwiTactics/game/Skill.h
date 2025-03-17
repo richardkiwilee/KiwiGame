@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <functional>
-#include <pybind11/embed.h>  // pybind11 Ç¶Èë Python µÄÍ·ÎÄ¼ş
+#include <pybind11/embed.h>  // pybind11 åµŒå…¥ Python çš„å¤´æ–‡ä»¶
 #include <pybind11/pybind11.h>
 #include <sol/sol.hpp>
 #include "Structs.h"
@@ -34,7 +34,7 @@ inline void push_CharacterInfo_to_lua(lua_State* L, CharacterInfo* info, std::st
 {
     // Push Attacker to Lua table
     lua_pushstring(L, name.c_str());
-    lua_newtable(L);  // ´´½¨ Attacker ±í
+    lua_newtable(L);  // åˆ›å»º Attacker è¡¨
     std::cout << "Pushed " << name << " table" << std::endl;
     lua_pushstring(L, "id");
     lua_pushinteger(L, info->id);
@@ -171,15 +171,15 @@ inline void push_CharacterInfo_to_lua(lua_State* L, CharacterInfo* info, std::st
     lua_settable(L, -3);
     std::cout << "Pushed " << name << ".Jump: " << info->Jump << std::endl;
 
-    lua_settable(L, -3);  // ½« Attacker ±í²åÈë DamageCalcuteInfo ±í
+    lua_settable(L, -3);  // å°† Attacker è¡¨æ’å…¥ DamageCalcuteInfo è¡¨
     std::cout << "Pushed " << name << " to DamageCalcuteInfo table" << std::endl;
 
 }
 inline void push_SpatialRelationship_to_lua(lua_State* L, SpatialRelationship* info, std::string name)
 {
-    // ½« Relative ×ª»»Îª Lua ±í
+    // å°† Relative è½¬æ¢ä¸º Lua è¡¨
     lua_pushstring(L, name.c_str());
-    lua_newtable(L);  // ´´½¨ Relative ±í
+    lua_newtable(L);  // åˆ›å»º Relative è¡¨
 
     lua_pushstring(L, "inSight");
     lua_pushboolean(L, info->inSight);
@@ -201,14 +201,14 @@ inline void push_SpatialRelationship_to_lua(lua_State* L, SpatialRelationship* i
     // lua_settable(L, -3);
 }
 inline void push_damage_info_to_lua_(lua_State* L, DamageCalcuteInfo* info) {
-    // ´´½¨Ò»¸öĞÂµÄ±íÀ´±íÊ¾ DamageCalcuteInfo
+    // åˆ›å»ºä¸€ä¸ªæ–°çš„è¡¨æ¥è¡¨ç¤º DamageCalcuteInfo
     lua_newtable(L);
     push_CharacterInfo_to_lua(L, &info->Attacker, "Attacker");
     push_CharacterInfo_to_lua(L, &info->Defender, "Defender");
     push_SpatialRelationship_to_lua(L, &info->Relative, "Relative");
     // lua_settable(L, -1);    // Lua after push info: 1
     // lua_settable(L, -2);    // crash
-    lua_settable(L, -3);    // Lua after push info: 1 Õ»¶¥table
+    lua_settable(L, -3);    // Lua after push info: 1 æ ˆé¡¶table
     // lua_settable(L, -4);    // crash
 }
 
@@ -323,7 +323,7 @@ private:
         PyDict_SetItemString(damage_info, "Defender", defender);
         Py_XDECREF(defender);
 
-        // ½« Relative Ìí¼Óµ½×ÖµäÖĞ
+        // å°† Relative æ·»åŠ åˆ°å­—å…¸ä¸­
         PyObject* relative = PyDict_New();
         PyDict_SetItemString(relative, "inSight", PyBool_FromLong(info->Relative.inSight));
         PyDict_SetItemString(relative, "inAttackRange", PyBool_FromLong(info->Relative.inAttackRange));
@@ -349,25 +349,25 @@ private:
             PyObject* pFunc = PyObject_GetAttrString(pModule, func_name.c_str());
 
             if (pFunc && PyCallable_Check(pFunc)) {
-                // ÏÔÊ½²¶»ñ `this`
+                // æ˜¾å¼æ•è· `this`
                 SkillMap[id] = [this, pFunc](DamageCalcuteInfo* x) {
-                    // Ê¹ÓÃ¸¨Öúº¯Êı½« DamageCalcuteInfo ×ª»»Îª Python ×Öµä
+                    // ä½¿ç”¨è¾…åŠ©å‡½æ•°å°† DamageCalcuteInfo è½¬æ¢ä¸º Python å­—å…¸
                     PyObject* damage_info = convert_damage_info_to_py(x);
-                    // ½« damage_info ·â×°³ÉÒ»¸öÔª×é×÷Îª²ÎÊı
+                    // å°† damage_info å°è£…æˆä¸€ä¸ªå…ƒç»„ä½œä¸ºå‚æ•°
                     PyObject* args = PyTuple_Pack(1, damage_info);
-                    // µ÷ÓÃ Python º¯Êı
+                    // è°ƒç”¨ Python å‡½æ•°
                     PyObject* result = PyObject_CallObject(pFunc, args);
                     double ret = 0.0;
                     if (result && PyFloat_Check(result)) {
-                        ret = PyFloat_AsDouble(result);  // ×ª»»Îª double ÀàĞÍ
+                        ret = PyFloat_AsDouble(result);  // è½¬æ¢ä¸º double ç±»å‹
                     }
                     else {
-                        PyErr_Print();  // Èç¹û·µ»ØÖµÎŞĞ§£¬Ôò´òÓ¡´íÎóĞÅÏ¢
+                        PyErr_Print();  // å¦‚æœè¿”å›å€¼æ— æ•ˆï¼Œåˆ™æ‰“å°é”™è¯¯ä¿¡æ¯
                     }
-                    // ÇåÀí Python ¶ÔÏó
+                    // æ¸…ç† Python å¯¹è±¡
                     Py_XDECREF(result);
                     Py_XDECREF(args);
-                    Py_XDECREF(damage_info);  // ÊÍ·Å damage_info
+                    Py_XDECREF(damage_info);  // é‡Šæ”¾ damage_info
                     return ret;
                     };
                 Logger::getInstance().Info("Python function  '" + func_name + "' registered successfully!");

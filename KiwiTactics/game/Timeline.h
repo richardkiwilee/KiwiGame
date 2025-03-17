@@ -6,39 +6,39 @@
 #include <future>
 struct TimelineNode
 {
-	bool is_blocking;    // ÊÇ·ñ×èÈû
-	int delay_ms;        // ÑÓ³ÙºÁÃëÊı
+	bool is_blocking;    // æ˜¯å¦é˜»å¡
+	int delay_ms;        // å»¶è¿Ÿæ¯«ç§’æ•°
 };
 class Timeline {
 public:
-    // ÓÃÀ´´æ´¢ mystruct µÄÁĞ±í
+    // ç”¨æ¥å­˜å‚¨ mystruct çš„åˆ—è¡¨
     std::list<TimelineNode> _timeline;
 
-    // Ìí¼Ó mystruct ÔªËØµ½ÁĞ±íÖĞ
+    // æ·»åŠ  mystruct å…ƒç´ åˆ°åˆ—è¡¨ä¸­
     void add_to_list(bool blocking, int delay_ms) {
         _timeline.push_back({ blocking, delay_ms });
     }
     void AddNode(TimelineNode node) {
         _timeline.push_back(node);
     };
-    // Ö´ĞĞĞ­³Ìº¯Êı
+    // æ‰§è¡Œåç¨‹å‡½æ•°
     std::future<void> do_coroutine(TimelineNode ms) {
         return std::async(std::launch::async, [ms]() {
-            std::this_thread::sleep_for(std::chrono::milliseconds(ms.delay_ms));  // ÑÓ³Ù
+            std::this_thread::sleep_for(std::chrono::milliseconds(ms.delay_ms));  // å»¶è¿Ÿ
             std::cout << "Completed: delay " << ms.delay_ms << " ms, blocking: " << ms.is_blocking << "\n";
             });
     }
 
-    // Æô¶¯ play º¯Êı£¬ÒÀ´ÎÖ´ĞĞĞ­³Ì
+    // å¯åŠ¨ play å‡½æ•°ï¼Œä¾æ¬¡æ‰§è¡Œåç¨‹
     void play() {
         for (auto& ms : _timeline) {
-            // Èç¹ûĞèÒª×èÈû£¬µÈ´ıµ±Ç°Ğ­³ÌÖ´ĞĞÍê±Ï
+            // å¦‚æœéœ€è¦é˜»å¡ï¼Œç­‰å¾…å½“å‰åç¨‹æ‰§è¡Œå®Œæ¯•
             if (ms.is_blocking) {
                 auto future = do_coroutine(ms);
-                future.get(); // ×èÈûÖ±µ½µ±Ç°Ğ­³ÌÍê³É
+                future.get(); // é˜»å¡ç›´åˆ°å½“å‰åç¨‹å®Œæˆ
             }
             else {
-                // Æô¶¯·Ç×èÈûĞ­³Ì
+                // å¯åŠ¨éé˜»å¡åç¨‹
                 do_coroutine(ms);
             }
         }

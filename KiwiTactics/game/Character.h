@@ -28,12 +28,12 @@ public:
     Property()
         : _value(100), _min(0), _max(100) {}
 
-    // »ñÈ¡ÊôĞÔÖµ
+    // è·å–å±æ€§å€¼
     T get() const {
         return _value;
     }
 
-    // ÉèÖÃÊôĞÔÖµ£¬²¢ÔÚÉèÖÃºó´òÓ¡ÏûÏ¢
+    // è®¾ç½®å±æ€§å€¼ï¼Œå¹¶åœ¨è®¾ç½®åæ‰“å°æ¶ˆæ¯
     void set(T value) {
         if (value != _value) {
             _value = std::clamp(value, _min, _max);
@@ -45,42 +45,42 @@ public:
         _value = std::clamp(_value, _min, _max);
     }
 
-    // ÔËËã·ûÖØÔØ£¬ÓÃÓÚ¸³ÖµÊ±µ÷ÓÃsetº¯Êı
+    // è¿ç®—ç¬¦é‡è½½ï¼Œç”¨äºèµ‹å€¼æ—¶è°ƒç”¨setå‡½æ•°
     Property& operator=(T value) {
         set(value);
         return *this;
     }
     
     operator T() const {
-        return _value;  // ½«Property×ª»»ÎªÆäÄÚ²¿µÄÖµ
+        return _value;  // å°†Propertyè½¬æ¢ä¸ºå…¶å†…éƒ¨çš„å€¼
     }
 
 private:
-    T _value;  // ÊôĞÔÖµÀàĞÍÎªÄ£°åÀàĞÍT
+    T _value;  // å±æ€§å€¼ç±»å‹ä¸ºæ¨¡æ¿ç±»å‹T
     T _min;
-    T _max;     // ÏµÍ³ÉÏÏŞ Ò»°ãÈ¡ÀàĞÍµÄ¼«Öµ ×¢ÒâÓëºóĞø¾àÀëÊµÀı»¯³É½ÇÉ«ÊôĞÔµÄÉÏÏŞ²»Í¬
+    T _max;     // ç³»ç»Ÿä¸Šé™ ä¸€èˆ¬å–ç±»å‹çš„æå€¼ æ³¨æ„ä¸åç»­è·ç¦»å®ä¾‹åŒ–æˆè§’è‰²å±æ€§çš„ä¸Šé™ä¸åŒ
 };
 
-// clampº¯Êı£¬ÏŞÖÆPropertyµÄÖµÔÚÖ¸¶¨·¶Î§ÄÚ
+// clampå‡½æ•°ï¼Œé™åˆ¶Propertyçš„å€¼åœ¨æŒ‡å®šèŒƒå›´å†…
 template <typename T>
 T clamp(T newValue, Property<T>& minValue, Property<T>& maxValue) {
-    // »ñÈ¡minValueºÍmaxValueµÄÖµ£¬²¢Ê¹ÓÃstd::clamp½øĞĞ·¶Î§ÏŞÖÆ
+    // è·å–minValueå’ŒmaxValueçš„å€¼ï¼Œå¹¶ä½¿ç”¨std::clampè¿›è¡ŒèŒƒå›´é™åˆ¶
     T clampedValue = std::clamp(newValue, minValue.get(), maxValue.get());
-    // ÉèÖÃĞÂµÄÖµ£¨´Ë´¦¼ÙÉèvalueÊÇÒ»¸öCA16ÀàĞÍµÄ³ÉÔ±±äÁ¿£©
+    // è®¾ç½®æ–°çš„å€¼ï¼ˆæ­¤å¤„å‡è®¾valueæ˜¯ä¸€ä¸ªCA16ç±»å‹çš„æˆå‘˜å˜é‡ï¼‰
     return clampedValue;
 }
 
 class EventSystem {
 public:
-    // ¶¨ÒåÒ»¸öÊÂ¼şÀàĞÍ£¬ÊÂ¼şÊÇÒ»¸ö void() º¯Êı
+    // å®šä¹‰ä¸€ä¸ªäº‹ä»¶ç±»å‹ï¼Œäº‹ä»¶æ˜¯ä¸€ä¸ª void() å‡½æ•°
     using EventHandler = std::function<void()>;
-    // ÏòÊÂ¼şÁĞ±íÖĞÌí¼ÓÊÂ¼ş´¦ÀíÆ÷
+    // å‘äº‹ä»¶åˆ—è¡¨ä¸­æ·»åŠ äº‹ä»¶å¤„ç†å™¨
     void addEventHandler(const EventHandler& handler) {
         eventHandlers.push_back(handler);
     }
-    // ÒÆ³ıÊÂ¼ş´¦ÀíÆ÷
+    // ç§»é™¤äº‹ä»¶å¤„ç†å™¨
     void removeEventHandler(const EventHandler& handler) {
-        // Ê¹ÓÃ std::remove_if ºÍ erase À´ÒÆ³ıÆ¥ÅäµÄÊÂ¼ş´¦ÀíÆ÷
+        // ä½¿ç”¨ std::remove_if å’Œ erase æ¥ç§»é™¤åŒ¹é…çš„äº‹ä»¶å¤„ç†å™¨
         auto it = std::remove_if(eventHandlers.begin(), eventHandlers.end(),
             [&handler](const EventHandler& storedHandler) {
                 return storedHandler.target_type() == handler.target_type() &&
@@ -89,14 +89,14 @@ public:
 
         eventHandlers.erase(it, eventHandlers.end());
     }
-    // ´¥·¢ËùÓĞÊÂ¼ş´¦ÀíÆ÷
+    // è§¦å‘æ‰€æœ‰äº‹ä»¶å¤„ç†å™¨
     void triggerEvent() {
         for (auto& handler : eventHandlers) {
-            handler();  // Ö´ĞĞÊÂ¼ş´¦ÀíÆ÷
+            handler();  // æ‰§è¡Œäº‹ä»¶å¤„ç†å™¨
         }
     }
 private:
-    std::vector<EventHandler> eventHandlers;  // ´æ´¢ÊÂ¼ş´¦ÀíÆ÷
+    std::vector<EventHandler> eventHandlers;  // å­˜å‚¨äº‹ä»¶å¤„ç†å™¨
 };
 
 class Character
@@ -107,7 +107,7 @@ public:
 	FaceDirection face;
 	CharacterType _character_type;
     int64_t id;
-	// »ù´¡ÊôĞÔ
+	// åŸºç¡€å±æ€§
     Property<int16_t> hp;
     Property<int16_t> mana;
     Property<int8_t> movement;
@@ -120,26 +120,26 @@ public:
     EventSystem OnTurnEnd;
     EventSystem OnDeath;
     void attack(Character& target) {
-        OnAttack.triggerEvent();  // ´¥·¢¹¥»÷ÊÂ¼ş
-        target.attacked(*this);  // ÈÃÄ¿±êÊÜµ½¹¥»÷
+        OnAttack.triggerEvent();  // è§¦å‘æ”»å‡»äº‹ä»¶
+        target.attacked(*this);  // è®©ç›®æ ‡å—åˆ°æ”»å‡»
     }
 
     void attacked(Character& attacker) {
-        OnAttacked.triggerEvent();  // ´¥·¢±»¹¥»÷ÊÂ¼ş
+        OnAttacked.triggerEvent();  // è§¦å‘è¢«æ”»å‡»äº‹ä»¶
     }
 
     void startTurn() {
-        OnTurnStart.triggerEvent();  // ´¥·¢»ØºÏ¿ªÊ¼ÊÂ¼ş
+        OnTurnStart.triggerEvent();  // è§¦å‘å›åˆå¼€å§‹äº‹ä»¶
     }
 
     void endTurn() {
-        OnTurnEnd.triggerEvent();  // ´¥·¢»ØºÏ½áÊøÊÂ¼ş
+        OnTurnEnd.triggerEvent();  // è§¦å‘å›åˆç»“æŸäº‹ä»¶
     }
     void death() {
-		OnDeath.triggerEvent();  // ´¥·¢ËÀÍöÊÂ¼ş
+		OnDeath.triggerEvent();  // è§¦å‘æ­»äº¡äº‹ä»¶
 	}
 
-    // ĞòÁĞ»¯: ½« QuadGridMap ¶ÔÏóµÄ×Ö¶ÎÒÔ¼° QuadGridMap Êı×éĞ´ÈëÎÄ¼ş
+    // åºåˆ—åŒ–: å°† QuadGridMap å¯¹è±¡çš„å­—æ®µä»¥åŠ QuadGridMap æ•°ç»„å†™å…¥æ–‡ä»¶
     void Serialize(const std::string& filename) const {
         std::ofstream ofs(filename, std::ios::binary);
         if (!ofs.is_open()) {
@@ -153,7 +153,7 @@ public:
     void Serialize(std::ofstream& ofs) const {
     }
 
-    // ·´ĞòÁĞ»¯: ´ÓÎÄ¼ş¶ÁÈ¡Êı¾İ²¢»Ö¸´ QuadGridMap ¶ÔÏóµÄ×Ö¶ÎÒÔ¼° QuadGridMap Êı×é
+    // ååºåˆ—åŒ–: ä»æ–‡ä»¶è¯»å–æ•°æ®å¹¶æ¢å¤ QuadGridMap å¯¹è±¡çš„å­—æ®µä»¥åŠ QuadGridMap æ•°ç»„
     void Deserialize(const std::string& filename) {
         std::ifstream ifs(filename, std::ios::binary);
         if (!ifs.is_open()) {
@@ -176,7 +176,7 @@ public:
 };
 
 
-// Ä¬ÈÏ¼¼ÄÜÉËº¦¹«Ê½£¬ÔÚÊéĞ´¼¼ÄÜ¹«Ê½Ê±£¬Ò»°ã²»Ê¹ÓÃ±»¹¥»÷·½µÄ¿¹ĞÔ²¹Õı µ«ÈÔÈ»´«ÈëÁË±»¹¥»÷·½µÄĞÅÏ¢ÊÇÎªÁË·½±ãÍê³ÉÀıÈçÕ¶É±µÄ¹¦ÄÜ
+// é»˜è®¤æŠ€èƒ½ä¼¤å®³å…¬å¼ï¼Œåœ¨ä¹¦å†™æŠ€èƒ½å…¬å¼æ—¶ï¼Œä¸€èˆ¬ä¸ä½¿ç”¨è¢«æ”»å‡»æ–¹çš„æŠ—æ€§è¡¥æ­£ ä½†ä»ç„¶ä¼ å…¥äº†è¢«æ”»å‡»æ–¹çš„ä¿¡æ¯æ˜¯ä¸ºäº†æ–¹ä¾¿å®Œæˆä¾‹å¦‚æ–©æ€çš„åŠŸèƒ½
 double _exampleDmgFormula(DamageCalcuteInfo* info) {
     CharacterInfo attacker = info->Attacker;
     CharacterInfo defender = info->Defender;

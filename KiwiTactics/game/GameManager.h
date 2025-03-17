@@ -16,7 +16,7 @@ class ObjectsManager
 public:
     ObjectsManager() {};
     ~ObjectsManager() {
-        // ÇåÀí¶¯Ì¬·ÖÅäµÄÄÚ´æ
+        // æ¸…ç†åŠ¨æ€åˆ†é…çš„å†…å­˜
         for (auto& pair : _class) {
             delete pair.second;
         }
@@ -134,24 +134,24 @@ private:
             Logger::getInstance().Error("Failed to open file for serialization.");
             return;
         }
-        // ÐòÁÐ»¯°æ±¾ºÍÃû³Æ
+        // åºåˆ—åŒ–ç‰ˆæœ¬å’Œåç§°
         ofs.write(VERSION.data(), VERSION.size()); ofs.put('\0');
-        // ÐòÁÐ»¯modÁÐ±í
+        // åºåˆ—åŒ–modåˆ—è¡¨
         // module->Serialize(ofs);
         // 
-        // ÐòÁÐ»¯ RandomBuffer µÄÊý¾Ý
+        // åºåˆ—åŒ– RandomBuffer çš„æ•°æ®
         randomBuffer->Serialize(ofs);
-        // ÐòÁÐ»¯µØÍ¼Êý¾Ý
+        // åºåˆ—åŒ–åœ°å›¾æ•°æ®
         map->Serialize(ofs);
-        // ÐòÁÐ»¯ÎïÆ·Êý¾Ý
+        // åºåˆ—åŒ–ç‰©å“æ•°æ®
         inventory->Serialize(ofs);
-        // ÐòÁÐ»¯½¨ÖþÊý¾Ý
+        // åºåˆ—åŒ–å»ºç­‘æ•°æ®
         buildings->Serialize(ofs);
-        // ÐòÁÐ»¯ÓÑ·½Êý¾Ý
+        // åºåˆ—åŒ–å‹æ–¹æ•°æ®
         alias->Serialize(ofs);
-        // ÐòÁÐ»¯ÖÐÁ¢µ¥Î»Êý¾Ý
+        // åºåˆ—åŒ–ä¸­ç«‹å•ä½æ•°æ®
         neutrals->Serialize(ofs);
-        // ÐòÁÐ»¯µÐ·½Êý¾Ý
+        // åºåˆ—åŒ–æ•Œæ–¹æ•°æ®
         emeries->Serialize(ofs);
         ofs.close();
         Logger::getInstance().Info("Serialization successful.");
@@ -171,8 +171,8 @@ private:
             Logger::getInstance().Error("Failed to open file for deserialization.");
             return;
         }
-        // ·´ÐòÁÐ»¯°æ±¾ºÍÃû³Æ
-        std::getline(ifs, VERSION, '\0');  // ¶ÁÈ¡Ö±ÖÁ null terminator
+        // ååºåˆ—åŒ–ç‰ˆæœ¬å’Œåç§°
+        std::getline(ifs, VERSION, '\0');  // è¯»å–ç›´è‡³ null terminator
         // module->Deserialize(ifs);
         randomBuffer->Deserialize(ifs);
         map->Deserialize(ifs);

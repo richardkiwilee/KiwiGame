@@ -8,29 +8,29 @@
 
 class RandomSeed {
 public:
-    // ¹¹Ôìº¯Êı1£ºËæ»úÉú³ÉÒ»¸öÖ¸¶¨³¤¶ÈµÄ»º³åÇø
+    // æ„é€ å‡½æ•°1ï¼šéšæœºç”Ÿæˆä¸€ä¸ªæŒ‡å®šé•¿åº¦çš„ç¼“å†²åŒº
     RandomSeed(int len) : len(len), position(0) {
         buffer = new uint8_t[len];
-        // Ìî³äËæ»úÊı
+        // å¡«å……éšæœºæ•°
         for (int i = 0; i < len; ++i) {
-            buffer[i] = rand() % 256; // Éú³É 0 µ½ 255 µÄËæ»ú×Ö½Ú
+            buffer[i] = rand() % 256; // ç”Ÿæˆ 0 åˆ° 255 çš„éšæœºå­—èŠ‚
         }
     }
 
-    // ¹¹Ôìº¯Êı2£ºÊ¹ÓÃÌá¹©µÄ»º³åÇø³õÊ¼»¯
+    // æ„é€ å‡½æ•°2ï¼šä½¿ç”¨æä¾›çš„ç¼“å†²åŒºåˆå§‹åŒ–
     RandomSeed(uint8_t* p, int len) : buffer(p), len(len), position(0) {}
 
-    // Îö¹¹º¯Êı£ºÊÍ·Å¶¯Ì¬·ÖÅäµÄÄÚ´æ
+    // ææ„å‡½æ•°ï¼šé‡Šæ”¾åŠ¨æ€åˆ†é…çš„å†…å­˜
     ~RandomSeed() {
         if (buffer) {
             delete[] buffer;
         }
     }
 
-    // »ñÈ¡ÏÂÒ»¸ö 1 ×Ö½ÚµÄÖµ
+    // è·å–ä¸‹ä¸€ä¸ª 1 å­—èŠ‚çš„å€¼
     int8_t GetInt8() {
         if (position >= len) {
-            Reset(); // Èç¹û¶ÁÈ¡µ½ÁËÎ²²¿£¬ÖØÖÃÎª¿ªÍ·
+            Reset(); // å¦‚æœè¯»å–åˆ°äº†å°¾éƒ¨ï¼Œé‡ç½®ä¸ºå¼€å¤´
         }
         return static_cast<int8_t>(buffer[position++]);
     }
@@ -39,14 +39,14 @@ public:
     {
 		return int8_t(GetInt8() / 255.0);
 	}
-    // »ñÈ¡ÏÂÒ»¸ö 2 ×Ö½ÚµÄÖµ£¬Æ´½Óµ½»º³åÇøµÄ¿ªÊ¼²¿·Ö
+    // è·å–ä¸‹ä¸€ä¸ª 2 å­—èŠ‚çš„å€¼ï¼Œæ‹¼æ¥åˆ°ç¼“å†²åŒºçš„å¼€å§‹éƒ¨åˆ†
     int16_t GetInt16() {
         if (position + 1 >= len) {
-            Reset(); // Èç¹û¶ÁÈ¡µÄ³¤¶È²»¹»£¬ÖØÖÃÎª¿ªÍ·
+            Reset(); // å¦‚æœè¯»å–çš„é•¿åº¦ä¸å¤Ÿï¼Œé‡ç½®ä¸ºå¼€å¤´
         }
 
-        int16_t result = buffer[position];          // »ñÈ¡µ±Ç°×Ö½Ú
-        result |= (static_cast<int16_t>(buffer[position + 1]) << 8); // »ñÈ¡ÏÂÒ»¸ö×Ö½Ú²¢Æ´½Ó
+        int16_t result = buffer[position];          // è·å–å½“å‰å­—èŠ‚
+        result |= (static_cast<int16_t>(buffer[position + 1]) << 8); // è·å–ä¸‹ä¸€ä¸ªå­—èŠ‚å¹¶æ‹¼æ¥
         position += 2;
 
         return result;
@@ -63,7 +63,7 @@ public:
         int8_t c8 = GetInt8();
         return ((int64_t)c1 << 56) | ((int64_t)c2 << 48) | ((int64_t)c3 << 40) | ((int64_t)c4 << 32) | ((int64_t)c5 << 24) | ((int64_t)c6 << 16) | ((int64_t)c7 << 8) | c8;
     }
-    // ÖØÖÃÎ»ÖÃ£¬»Øµ½¿ªÍ·
+    // é‡ç½®ä½ç½®ï¼Œå›åˆ°å¼€å¤´
     void Reset() {
         position = 0;
     }
@@ -77,7 +77,7 @@ public:
         ofs.close();
     }
     void Serialize(std::ofstream& ofs) const {
-        // ÏÈĞòÁĞ»¯¶ÔÏóµÄ³¤¶È¡¢Î»ÖÃºÍ»º³åÇøÊı¾İ
+        // å…ˆåºåˆ—åŒ–å¯¹è±¡çš„é•¿åº¦ã€ä½ç½®å’Œç¼“å†²åŒºæ•°æ®
         ofs.write(reinterpret_cast<const char*>(&len), sizeof(len));
         ofs.write(reinterpret_cast<const char*>(&position), sizeof(position));
         ofs.write(reinterpret_cast<const char*>(buffer), len);
@@ -111,7 +111,7 @@ public:
         return buffer;
     }
 private:
-    uint8_t* buffer;  // ´æ´¢Êı¾İµÄ»º³åÇø
-    int len;          // »º³åÇøµÄ³¤¶È
-    int position;     // µ±Ç°¶ÁÈ¡µÄÎ»ÖÃ
+    uint8_t* buffer;  // å­˜å‚¨æ•°æ®çš„ç¼“å†²åŒº
+    int len;          // ç¼“å†²åŒºçš„é•¿åº¦
+    int position;     // å½“å‰è¯»å–çš„ä½ç½®
 };

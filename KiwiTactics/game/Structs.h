@@ -3,17 +3,17 @@
 struct SkillInfo
 {
     int64_t id;
-    int64_t trigger;    // Á¬Ëø¼¼ÄÜµÄid
-    int8_t DamageType;  // ÉËº¦ÊôĞÔ
-    int64_t preanimation;   // Ê©·¨Ç°¶¯»­    
-    int64_t animation;      // Ê©·¨¶¯»­
-    int repect;     // ÖØ¸´´ÎÊı
-    int AffectType; // ÓÑ¾ü µĞ¾ü È«Ìå »·¾³
-    int TargetType; // ×Ô¼º µãÄ¿±êÓÑ¾ü µãÄ¿±êµĞÈË Ä¿±êµØµã Õ½³¡
-    int AffectRange; // ×÷ÓÃ°ë¾¶
-    int CastType;   // Ö±Ïß Å×Éä ÇòÌå Ô²ÖùÌå µ¯Éä
-    int CastRange; // Ê©·¨¾àÀë  
-    bool NeedSight; // ĞèÒªÊÓÒ°
+    int64_t trigger;    // è¿é”æŠ€èƒ½çš„id
+    int8_t DamageType;  // ä¼¤å®³å±æ€§
+    int64_t preanimation;   // æ–½æ³•å‰åŠ¨ç”»    
+    int64_t animation;      // æ–½æ³•åŠ¨ç”»
+    int repect;     // é‡å¤æ¬¡æ•°
+    int AffectType; // å‹å†› æ•Œå†› å…¨ä½“ ç¯å¢ƒ
+    int TargetType; // è‡ªå·± ç‚¹ç›®æ ‡å‹å†› ç‚¹ç›®æ ‡æ•Œäºº ç›®æ ‡åœ°ç‚¹ æˆ˜åœº
+    int AffectRange; // ä½œç”¨åŠå¾„
+    int CastType;   // ç›´çº¿ æŠ›å°„ çƒä½“ åœ†æŸ±ä½“ å¼¹å°„
+    int CastRange; // æ–½æ³•è·ç¦»  
+    bool NeedSight; // éœ€è¦è§†é‡
     int funcAddress;	
     int CostHp;     
     int CostHpPct;
@@ -23,20 +23,20 @@ struct SkillInfo
     int CostMaxMpPct;
     int CostAp;
     int CostMove;
-    int RecoverType;    // ÎŞ·¨Ö÷¶¯»Ø¸´£¬°´»ØºÏ»Ø¸´£¬°´Õ½¶·»Ø¸´
+    int RecoverType;    // æ— æ³•ä¸»åŠ¨å›å¤ï¼ŒæŒ‰å›åˆå›å¤ï¼ŒæŒ‰æˆ˜æ–—å›å¤
     int MaxUseTime;
-    int applyPassiveEffect; // Ê©¼Ó±»¶¯Ğ§¹û
+    int applyPassiveEffect; // æ–½åŠ è¢«åŠ¨æ•ˆæœ
 };
 
 struct PassiveEffect
 {
     int64_t id;
     int funcAddress;
-    int64_t animation;      // ¶¯»­
-    int trigger;    // »ØºÏ¿ªÊ¼ »ØºÏ½áÊø ¹¥»÷Ê± ÊÜ»÷Ê± ËÀÍöÊ± ³£×¤
-    int stacks;     // µş¼Ó²ãÊı
-    bool candispeled;   // ÊÇ·ñ¿É±»ÇıÉ¢
-    int degression;	 // µİ¼õ·½Ê½ ¼õ1 ¼õ°ë 
+    int64_t animation;      // åŠ¨ç”»
+    int trigger;    // å›åˆå¼€å§‹ å›åˆç»“æŸ æ”»å‡»æ—¶ å—å‡»æ—¶ æ­»äº¡æ—¶ å¸¸é©»
+    int stacks;     // å åŠ å±‚æ•°
+    bool candispeled;   // æ˜¯å¦å¯è¢«é©±æ•£
+    int degression;	 // é€’å‡æ–¹å¼ å‡1 å‡åŠ 
 };
 
 struct CharacterInfo
@@ -56,18 +56,18 @@ struct CharacterInfo
     int16_t ActionPoint = -1;
     int16_t MaxMovement = -1;
     int16_t Movement = -1;
-    int16_t Strength = -1;     // ÎïÀí¹¥»÷
-    int16_t PhyDef = -1;     // ÎïÀí·ÀÓù
-    int16_t Intelligence = -1;     // Ä§·¨¹¥»÷
-    int16_t MagDef = -1;     // Ä§·¨·ÀÓù
-    int16_t Dexterity = -1;        // Ãô½İ
-    int16_t CriticalRate = -1;           // ±©»÷ÂÊ
-    int16_t CriticalStrengh = -1;    // ±©»÷Á¦Á¿
-    int16_t Luck = -1;       // ĞÒÔË
-    int16_t Will = -1;       // ÒâÖ¾
-    int16_t HitRate = -1;    // ÃüÖĞÂÊ
-    int16_t Evasion = -1;    // ÉÁ±ÜÂÊ
-    int16_t Jump = -1;       // ÌøÔ¾Á¦
+    int16_t Strength = -1;     // ç‰©ç†æ”»å‡»
+    int16_t PhyDef = -1;     // ç‰©ç†é˜²å¾¡
+    int16_t Intelligence = -1;     // é­”æ³•æ”»å‡»
+    int16_t MagDef = -1;     // é­”æ³•é˜²å¾¡
+    int16_t Dexterity = -1;        // æ•æ·
+    int16_t CriticalRate = -1;           // æš´å‡»ç‡
+    int16_t CriticalStrengh = -1;    // æš´å‡»åŠ›é‡
+    int16_t Luck = -1;       // å¹¸è¿
+    int16_t Will = -1;       // æ„å¿—
+    int16_t HitRate = -1;    // å‘½ä¸­ç‡
+    int16_t Evasion = -1;    // é—ªé¿ç‡
+    int16_t Jump = -1;       // è·³è·ƒåŠ›
 
 };
 
@@ -79,7 +79,7 @@ struct SpatialRelationship
 	bool isSideStrike = false;
 };
 
-struct DamageCalcuteInfo	// Ç¶Ì×µÄ½á¹¹Ìå ÓÃÒÔ´«µİ¼ÆËãÉËº¦
+struct DamageCalcuteInfo	// åµŒå¥—çš„ç»“æ„ä½“ ç”¨ä»¥ä¼ é€’è®¡ç®—ä¼¤å®³
 {
 	CharacterInfo Attacker;
 	CharacterInfo Defender;
@@ -100,11 +100,11 @@ struct BuildingCell3D
     int8_t x;
     int8_t y;
     int8_t z;
-    int8_t AskTerrain;  // ĞèÒªµÄµØ¸ñÀàĞÍ
+    int8_t AskTerrain;  // éœ€è¦çš„åœ°æ ¼ç±»å‹
 };
 struct BuildingInfo
 {
     int64_t id;
-    int8_t AskTerrain;  // ÃªµãĞèÒªµÄÅĞ¶¨µØ¸ñÀàĞÍ
-    std::vector<BuildingCell3D> occupy;  // Õ¼ÓÃµØ¸ñ
+    int8_t AskTerrain;  // é”šç‚¹éœ€è¦çš„åˆ¤å®šåœ°æ ¼ç±»å‹
+    std::vector<BuildingCell3D> occupy;  // å ç”¨åœ°æ ¼
 };
