@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <vector>
+
 struct SkillInfo
 {
     int64_t id;

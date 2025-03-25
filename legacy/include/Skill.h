@@ -6,7 +6,7 @@
 #include <pybind11/pybind11.h>
 #include <sol/sol.hpp>
 #include "Structs.h"
-#include "../extern/Logger.h"
+#include "Logger.h"
 namespace py = pybind11;
 
 const int8_t DAMAGE_TYPE_PHYSICAL = 1;

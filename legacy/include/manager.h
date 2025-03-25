@@ -5,10 +5,10 @@
 #include <unordered_map>
 #include <string>
 #include <sol/sol.hpp>
-#include "extern/Logger.h"
-#include "data/SQLiteManager.h"
-#include "../version.h"
-#include "../extern/ModuleManager.h"
+#include "Logger.h"
+#include "SQLiteManager.h"
+#include "version.h"
+#include "ModuleManager.h"
 #include "Skill.h"
 #include "GameManager.h"
 

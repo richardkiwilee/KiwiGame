@@ -1,6 +1,6 @@
 #ifndef SQLITEMANAGER_H
 #define SQLITEMANAGER_H
-
+#include <fstream>
 #include <string>
 #include <vector>
 #include <iostream>

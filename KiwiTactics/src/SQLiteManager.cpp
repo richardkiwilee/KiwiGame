@@ -1,8 +1,5 @@
 #include "SQLiteManager.h"
-#include <fstream>
-#include "../extern/Logger.h"
-#include <iostream>
-#include <string>
+#include "Logger.h"
 // 声明 SQLite API 函数
 extern "C" {
     typedef void sqlite3;

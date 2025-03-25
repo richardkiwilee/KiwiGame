@@ -12,6 +12,7 @@ set(PYTHON_INCLUDE_DIR "D:/Python36/include")
 set(PYBIND11_INCLUDE_DIR "D:/Python36/Lib/site-packages/pybind11/include")
 set(LUA_DIR "${CMAKE_SOURCE_DIR}/lua-5.4.2")
 set(SOL2_DIR "${CMAKE_SOURCE_DIR}/sol2-3.3.0")
+set(KiwiTactics_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/KiwiTactics/include")
 
 # 启用 C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -20,6 +21,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/KiwiTactics
+    ${KiwiTactics_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIR}
     ${PYBIND11_INCLUDE_DIR}
     ${LUA_DIR}/include

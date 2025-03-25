@@ -1,7 +1,7 @@
 #include "endianness_codec.h"
 
 
-class ArchiveCodec : public EndiannessCodec
+class EndianCodec : public EndiannessCodec
 {
 public:
 	uint8_t DecodeUInt8();	

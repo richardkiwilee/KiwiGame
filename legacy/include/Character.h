@@ -1,8 +1,14 @@
+#include "Logger.h"
 #include <algorithm>
 #include "Structs.h"
 #include <map>
 #include <string>
 #include <functional>
+#include <limits>
+#include <iostream>
+#include <fstream>
+#include <ostream>
+#include <iostream>
 
 enum FaceDirection { NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3 };
 enum CharacterType { PLAYER = 1, ENEMY = 2, Neutral = 3 };

@@ -1,6 +1,6 @@
-#include "archive.h"
+#include "endian.h"
 
-uint8_t ArchiveCodec::DecodeUInt8()
+uint8_t EndianCodec::DecodeUInt8()
 {
 	uint8_t value;
 	memcpy(&value, buffer.tail_, sizeof(value));
@@ -8,7 +8,7 @@ uint8_t ArchiveCodec::DecodeUInt8()
 	return value;
 }
 
-uint16_t ArchiveCodec::DecodeUInt16()
+uint16_t EndianCodec::DecodeUInt16()
 {
 	uint16_t value;
 	memcpy(&value, buffer.tail_, sizeof(value));
@@ -16,7 +16,7 @@ uint16_t ArchiveCodec::DecodeUInt16()
 	return value;
 }
 
-uint32_t ArchiveCodec::DecodeUInt32()
+uint32_t EndianCodec::DecodeUInt32()
 {
 	uint32_t value;
 	memcpy(&value, buffer.tail_, sizeof(value));
@@ -24,7 +24,7 @@ uint32_t ArchiveCodec::DecodeUInt32()
 	return value;
 }
 
-uint64_t ArchiveCodec::DecodeUInt64()
+uint64_t EndianCodec::DecodeUInt64()
 {
 	uint64_t value;
 	memcpy(&value, buffer.tail_, sizeof(value));
@@ -32,7 +32,7 @@ uint64_t ArchiveCodec::DecodeUInt64()
 	return value;
 }
 
-std::string ArchiveCodec::DecodeStock()
+std::string EndianCodec::DecodeStock()
 { 
 	char _stock[8];
 	std::string _str;
@@ -52,7 +52,7 @@ std::string ArchiveCodec::DecodeStock()
 	return _str;
 };
 
-void ArchiveCodec::trim(char * str)
+void EndianCodec::trim(char * str)
 {
 	size_t len;
 	int k, i;
@@ -72,7 +72,7 @@ void ArchiveCodec::trim(char * str)
 	return;
 }
 
-char * ArchiveCodec::rtrim(char * s)
+char * EndianCodec::rtrim(char * s)
 {
 	size_t i;
 	if (s== NULL)
@@ -89,7 +89,7 @@ char * ArchiveCodec::rtrim(char * s)
 	return s;
 }
 
-std::string ArchiveCodec::DecodeASCII(const int size)
+std::string EndianCodec::DecodeASCII(const int size)
 {
 	char* _stock = new char[size];
 	std::string _str;
@@ -109,7 +109,7 @@ std::string ArchiveCodec::DecodeASCII(const int size)
 	return _str;
 };
 
-std::string ArchiveCodec::DecodeString(const int size)
+std::string EndianCodec::DecodeString(const int size)
 {
 	char* _stock = new char[size];
 	std::string _str;
