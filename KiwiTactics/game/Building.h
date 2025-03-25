@@ -1,5 +1,34 @@
 #include <iostream>
 #include <fstream>
+#include <cstdint>
+#include <set>
+
+
+class BuildingCell
+{
+public:
+    BuildingCell() {Material = 0; x = 0; y = 0; z = 0;}  // Default constructor
+
+    ~BuildingCell() = default;  // Default destructor
+
+    // 比较运算符
+    bool operator==(const BuildingCell& other) const {
+        return this->x == other.x && this->y == other.y && this->z == other.z;
+    }
+
+    bool operator<(const BuildingCell& other) const {
+        return this->x < other.x || (this->x == other.x && (this->y < other.y || (this->y == other.y && this->z < other.z)));
+    }
+
+    bool operator>(const BuildingCell& other) const {
+        return this->x > other.x || (this->x == other.x && (this->y > other.y || (this->y == other.y && this->z > other.z)));
+    }
+    
+    int8_t Material;
+    int8_t x;
+    int8_t y;
+    int8_t z;
+};
 
 
 class Building
@@ -9,6 +38,7 @@ public:
 
     ~Building() = default;  // Default destructor
     int64_t id;
+    std::set<BuildingCell> cells;
     // Serialize to a file
     void Serialize(const std::string& filename) const {
         std::ofstream ofs(filename, std::ios::binary);
