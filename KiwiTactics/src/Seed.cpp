@@ -82,6 +82,25 @@ int Seed::GetLen() {
     return len;
 }
 
+int64_t Seed::GetInt64()
+{
+    int32_t low = GetInt32();
+    int32_t high = GetInt32();
+    return (static_cast<int64_t>(high) << 32) | low;
+}
+
+int32_t Seed::GetInt32()
+{
+    int8_t low = GetInt8();
+    int8_t high = GetInt8();
+    return (static_cast<int32_t>(high) << 8) | low;
+}
+
+int8_t Seed::GetInt8()
+{
+    return buffer[position++];
+}
+
 uint8_t* Seed::GetBuffer() {
     return buffer;
 }

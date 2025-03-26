@@ -14,7 +14,7 @@ file(GLOB_RECURSE SRC_FILES
     endian/*.*
     plugin/*.*
     include/*.h
-    src/*.*
+    src/*.* 
 )
 
 # 为源文件生成源组

@@ -20,6 +20,9 @@ class Seed {
     void SetPosition(int pos);
     int GetPosition();
     int GetLen();
+    int64_t GetInt64();
+    int32_t GetInt32();
+    int8_t GetInt8();
     uint8_t* GetBuffer();
 
  private:
