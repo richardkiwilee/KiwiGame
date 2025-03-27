@@ -14,8 +14,8 @@ file(GLOB_RECURSE SRC_FILES
     endian/*.*
     plugin/*.*
     include/*.h
-    src/*.* 
-)
+    src/*.*
+) 
 
 # 为源文件生成源组
 source_group(TREE ${CMAKE_SOURCE_DIR}/${PNAME} FILES ${SRC_FILES})
