@@ -27,3 +27,14 @@ struct SkillInfo
     int MaxUseTime;
     int applyPassiveEffect; // 施加被动效果
 };
+
+
+class Skill
+{
+public:
+    Skill() = default;
+    ~Skill() = default;
+    int64_t id;
+    
+
+};
