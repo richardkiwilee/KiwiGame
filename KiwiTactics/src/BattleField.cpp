@@ -73,6 +73,10 @@ void BattleField::PlaceBuilding(int x, int y, int64_t building_id)
 {
 }
 
+void BattleField::BuildBuilding(int x, int y, int64_t building_id)
+{
+}
+
 void BattleField::RemoveBuilding(int x, int y)
 {
 }
@@ -83,6 +87,11 @@ void BattleField::MoveCharacter(int64_t character_id, int x, int y)
 
 void BattleField::SettlementSkill(int64_t caster_id, int64_t skill_id, int64_t target_id)
 {
+}
+
+int64_t BattleField::NextActionableCharacter()
+{
+    return 0;
 }
 
 void BattleField::EndTurn()

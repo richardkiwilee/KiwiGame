@@ -42,10 +42,15 @@ public:
     void Save();
     void Serialize();
     void Deserialize();
+
     void PlaceBuilding(int x, int y, int64_t building_id);
+    void BuildBuilding(int x, int y, int64_t building_id);
     void RemoveBuilding(int x, int y);
     void MoveCharacter(int64_t character_id, int x, int y);
     void SettlementSkill(int64_t caster_id, int64_t skill_id, int64_t target_id);
+
+    int64_t NextActionableCharacter();
+
     void EndTurn();
     void StartTurn();
 
