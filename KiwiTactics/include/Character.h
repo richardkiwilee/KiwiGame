@@ -15,6 +15,35 @@
 #include "CharacterInfo.h"
 #include "Equipment.h"
 
+class CharacterAttribute
+{
+public:
+    CharacterAttribute() = default;
+    ~CharacterAttribute() = default;
+    int32_t Get();
+    int32_t GetBase();
+    void Update();
+private:
+    int32_t value;
+    int32_t base_value;
+    std::map<int64_t, int32_t> adj;
+};
+
+class CharacterRecoverableAttribute
+{
+public:
+    CharacterRecoverableAttribute() = default;
+    ~CharacterRecoverableAttribute() = default;
+    int32_t Get();
+    int32_t GetBase();
+    void Update();
+private:
+    int32_t value;
+    int32_t base_max_value;
+    std::map<int64_t, int32_t> adj;
+};
+
+
 class Character
 {
 public:
@@ -24,31 +53,26 @@ public:
     int8_t character_type;  // 角色类型 领袖 可操作友方 不可操作友方 中立 普通敌人 精英敌人 boss
 	// 基础属性
     int8_t face;    // 角色朝向
-    int16_t max_hp; // 最大生命
-    int16_t max_mana;   // 最大魔法
-    int8_t max_movement; // 最大移动力
-    int8_t max_ap; // 最大行动点
-    int8_t max_armor; // 最大护甲
-    int16_t cur_hp; // 当前生命
-    int16_t cur_mana; // 当前魔法
-    int8_t cur_movement; // 当前移动力
-    int8_t cur_ap; // 当前行动点    
-    int8_t cur_armor; // 当前护甲
-    int8_t base_hp_regen; // 基础生命回复
-    int8_t base_mana_regen; // 基础魔法回复
-    int8_t base_str; // 基础力量
-    int8_t base_dex; // 基础敏捷
-    int8_t base_int; // 基础智力
-    int8_t base_jump; // 基础跳跃力
-    int8_t base_sight; // 基础视野
-    int8_t base_dmg_boost; // 基础攻击力增强
-    int8_t base_critical_chance; // 基础暴击率
-    int8_t base_critical_boost; // 基础暴击增强
-    int8_t base_evasion; // 基础闪避
-    int8_t base_def; // 基础护甲
-    int8_t base_parry; // 基础数值伤害减免
-    int8_t base_dmg_reduce; // 基础百分比伤害减免
-    int8_t base_ac; // 基础韧性 影响抵抗负面状态与暴击的概率
+    CharacterRecoverableAttribute hp; // 生命
+    CharacterRecoverableAttribute mana;   // 魔法
+    CharacterRecoverableAttribute movement; // 移动力
+    CharacterRecoverableAttribute ap; // 行动点
+    CharacterRecoverableAttribute armor; // 护甲
+    CharacterAttribute hp_regen; // 生命回复
+    CharacterAttribute mana_regen; // 魔法回复
+    CharacterAttribute str; // 力量
+    CharacterAttribute dex; // 敏捷
+    CharacterAttribute intelligence; // 智力
+    CharacterAttribute jump; // 跳跃力
+    CharacterAttribute sight; // 视野
+    CharacterAttribute dmg_boost; // 攻击力增强
+    CharacterAttribute critical_chance; // 暴击率
+    CharacterAttribute critical_boost; // 暴击增强
+    CharacterAttribute evasion; // 闪避
+    CharacterAttribute def; // 护甲
+    CharacterAttribute parry; // 数值伤害减免
+    CharacterAttribute dmg_reduce; // 百分比伤害减免
+    CharacterAttribute ac; // 韧性 影响抵抗负面状态与暴击的概率
 
     std::map<int64_t, BuffInfo*> buffs; // buff or debuff
     std::map<int64_t, Skill*> skills;   // 角色节能

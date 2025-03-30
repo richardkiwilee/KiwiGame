@@ -1,3 +1,16 @@
+# include "Buff.h"
+
+class BaseEquipment {  // 基础装备
+public:
+    BaseEquipment() = default;
+    ~BaseEquipment() = default;
+    int8_t position;    // 部位
+    EquipmentEffect* effect = nullptr; // 效果
+    std::set<int64_t> skills; // 装备技能
+    std::set<int64_t> buffs; // 装备buff
+    std::map<int64_t, int32_t> attributes; // 装备属性
+};
+
 class Helmet {  // 头盔
 public:
     Helmet() = default;

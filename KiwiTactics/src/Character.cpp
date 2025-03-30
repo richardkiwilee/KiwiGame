@@ -53,3 +53,31 @@ CharacterInfo* Character::GetCharacterInfo() {
     CharacterInfo* info = new CharacterInfo();
     return info;
 }
+
+int32_t CharacterAttribute::Get()
+{
+    return 0;
+}
+
+int32_t CharacterAttribute::GetBase()
+{
+    return 0;
+}
+
+void CharacterAttribute::Update()
+{
+}
+
+int32_t CharacterRecoverableAttribute::Get()
+{
+    return 0;
+}
+
+int32_t CharacterRecoverableAttribute::GetBase()
+{
+    return 0;
+}
+
+void CharacterRecoverableAttribute::Update()
+{
+}

@@ -22,3 +22,9 @@ struct PassiveEffect
     int degression;	 // 递减方式 减1 减半 
 };
 
+class EquipmentEffect
+{
+public:
+    EquipmentEffect() = default;
+    ~EquipmentEffect() = default;
+};
