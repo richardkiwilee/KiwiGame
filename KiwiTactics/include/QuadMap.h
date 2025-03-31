@@ -6,12 +6,14 @@
 #include <fstream>
 #include <stdexcept>
 #include <string>
+#include "Character.h"
 
 struct QuadGrid {
     uint8_t height = 0x00;         
     uint8_t terrain = 0x00;        
     uint8_t effect = 0x00;         
     uint64_t objectid = 0x00;      
+    Character* unit = nullptr;
 
     void Serialize(std::ofstream& ofs) const;
     void Deserialize(std::ifstream& ifs);
@@ -25,6 +27,7 @@ public:
     uint8_t row = 0;            
     uint8_t col = 0;            
     int64_t seed = 0;           
+
     std::vector<std::vector<QuadGrid>> gridMap;  
 
     QuadGridMap(uint8_t version, uint8_t row, uint8_t col, int64_t seed);

@@ -75,14 +75,12 @@ public:
     CharacterAttribute ac; // 韧性 影响抵抗负面状态与暴击的概率
 
     std::map<int64_t, BuffInfo*> buffs; // buff or debuff
-    std::map<int64_t, Skill*> skills;   // 角色节能
-    std::map<int64_t, Skill*> equipped_skills;   // 装备技能
-    std::set<int64_t> actions; // 因为可以进行的动作
+    std::map<int64_t, Skill*> actions;   // 角色节能和装备技能和动作
     std::set<int64_t> traits; // 角色常驻特性
 
     Helmet* helmet = nullptr;
     Chest* chest = nullptr;
-    Gloves* gloves = nullptr;
+    Glove* glove = nullptr;
     Leg* leg = nullptr;
     Foot* foot = nullptr;
     Cloak* cloak = nullptr; 
@@ -98,15 +96,16 @@ public:
     EventSystem OnTurnStart;
     EventSystem OnTurnEnd;
     EventSystem OnDeath;
-    void attack(Character& target);
-    void attacked(Character& attacker);
+    
     void startTurn();
     void endTurn();
     void death();
+    
     void Serialize(const std::string& filename) const;
     void Serialize(std::ofstream& ofs) const;
     void Deserialize(const std::string& filename);
     void Deserialize(std::ifstream& ifs);
     CharacterInfo* GetCharacterInfo();
+    Skill* GetSkill(int64_t id);
 private:
 };

@@ -28,3 +28,17 @@ public:
     EquipmentEffect() = default;
     ~EquipmentEffect() = default;
 };
+
+class Buff
+{
+public:
+    Buff() = default;
+    ~Buff() = default;
+    int64_t id;
+    bool visible;
+    int8_t BuffType;
+    double value;
+    int64_t remainTurn;
+    int funcAddress;
+
+};

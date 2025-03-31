@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <map>
+
 struct SkillInfo
 {
     int64_t id;
@@ -35,6 +37,17 @@ public:
     Skill() = default;
     ~Skill() = default;
     int64_t id;
-    
-
+    int8_t type;    // 角色 物品 场地
+    bool requireTarget;
+    int8_t effect_type;     // 作用类型
+    int8_t target_type;     // 自己 点目标友军 点目标敌人 目标地点 战场
+    bool castable;
+    int8_t max_use_time;
+    int8_t remain_use_time;
+    int8_t recover_type;
+    std::map<int8_t, int64_t> requires; // 使用技能需要的资源
+    void OnTurnStart();
+    void OnTurnEnd();
+    void OnBattleStart();
+    void OnBattleEnd();
 };

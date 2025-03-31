@@ -1,0 +1,105 @@
+#pragma once
+#include <string>
+
+// 定义角色阵营
+const std::string Camp_Empty = "";     // 空对象 游戏管理类
+const std::string Camp_Leader = "leader";   // 领袖 死亡则游戏结束
+const std::string Camp_Member = "member";   // 招募的可操控角色
+const std::string Camp_Friendly = "friendly";   // 同阵营的不可操控友好角色
+const std::string Camp_Neutral = "neutral";     // 中立角色
+const std::string Camp_Enemy = "enemy";     // 杂兵
+const std::string Camp_Elite = "elite";     // 精英
+const std::string Camp_Boss = "boss";     // BOSS
+
+// 定义全局资源
+const std::string Resource_Gold = "gold";
+const std::string Resource_Food = "food";
+const std::string Resource_Stone = "stone";
+const std::string Resource_Iron = "iron";
+const std::string Resource_Wood = "wood";
+
+// 定义角色属性
+const std::string Resource_Exp = "exp";
+const std::string Resource_Level = "level";
+const std::string Attr_Face = "face";
+const std::string Attr_MaxHP = "max_hp";
+const std::string Attr_HP = "hp";
+const std::string Attr_MaxMP = "max_mp";
+const std::string Attr_MP = "mp";
+const std::string Attr_MaxMov = "max_mov";
+const std::string Attr_Mov = "mov";
+const std::string Attr_MaxAp = "max_ap";
+const std::string Attr_Ap = "ap";
+const std::string Attr_HP_Regen = "hp_regen";
+const std::string Attr_MP_Regen = "mp_regen";
+const std::string Attr_Str = "str";
+const std::string Attr_Dex = "dex";
+const std::string Attr_Intelligence = "int";
+const std::string Attr_Base_Str = "base_str";
+const std::string Attr_Base_Dex = "base_dex";
+const std::string Attr_Base_Intelligence = "base_int";
+const std::string Attr_Jump = "jump";
+const std::string Attr_Base_Jump = "base_jump";
+const std::string Attr_Sight = "sight";
+const std::string Attr_Base_Sight = "base_sight";
+const std::string Attr_Dmg_Boost = "dmg_boost";
+const std::string Attr_Base_Dmg_Boost = "base_dmg_boost";
+const std::string Attr_Critical_Chance = "critical_chance";
+const std::string Attr_Base_Critical_Chance = "base_critical_change";
+const std::string Attr_Critical_Boost = "critical_boost";
+const std::string Attr_Base_Critical_Boost = "base_critical_boost";
+const std::string Attr_Evasion = "evasion";
+const std::string Attr_Base_Evasion = "base_evasion";
+const std::string Attr_Def = "def";
+const std::string Attr_Base_Def = "base_def";
+const std::string Attr_Parry = "parry";
+const std::string Attr_Base_Parry = "base_parry";
+const std::string Attr_Dmg_Reduce = "dmg_reduce";
+const std::string Attr_Base_Dmg_Reduce = "base_dmg_reduce";
+const std::string Attr_Ac = "ac";
+const std::string Attr_Base_Ac = "base_ac";
+
+// 定义装备类型
+const std::string Equip_Helmet = "helmet";
+const std::string Equip_Chest = "chest";
+const std::string Equip_Leg = "leg";
+const std::string Equip_Glove = "glove";
+const std::string Equip_Foot = "foot";
+const std::string Equip_Cloak = "cloak";
+const std::string Equip_TwoHands = "twohands";
+const std::string Equip_MainHand = "mainhand";
+const std::string Equip_SubHand = "subhand";
+const std::string Equip_Jewelry = "jewelry";
+const std::string Equip_Consumable = "consumable";
+
+// 定义朝向
+const std::string Dir_North = "north";
+const std::string Dir_East = "east";
+const std::string Dir_South = "south";
+const std::string Dir_West = "west";
+
+// 定义异常状态 通过组合复数个状态来拼接一个buff 多个buff可能拥有相同的tag
+const std::string Status_Free = "free"; // 自由态 与多个状态互斥
+const std::string Status_Unmoveable = "unmoveable";     // 无法主动移动
+const std::string Status_Unpushable = "unpushable";     // 无法被推动
+const std::string Status_Unattackable = "unattackable";     // 无法攻击
+const std::string Status_Unfightback = "unfightback";     // 无法反击
+const std::string Status_Uncastable = "uncastable";     // 无法施法
+const std::string Status_Unchoosable = "unchoosable";     // 无法被选择
+const std::string Status_Unseemly = "unseemly";     // 无法被看到
+const std::string Status_Unjumpable = "unjumpable";     // 无法跳跃
+const std::string Status_Unswimmable = "unswimmable";     // 无法游泳
+const std::string Status_Unfleeable = "unfleeable";     // 无法逃跑
+const std::string Status_Unstunnable = "unstunnable";     // 无法被控制
+const std::string Status_Unhealable = "unhealable";     // 无法回复
+
+// 定义技能影响范围类型
+const std::string Skill_Effect_Range_Self = "self";     // 自身
+const std::string Skill_Effect_Range_Target = "target";     // 目标
+const std::string Skill_Effect_Range_Around = "around";     // 围绕目标 9格
+const std::string Skill_Effect_Range_Line = "line";     // 线形范围 增加范围是延长射程
+const std::string Skill_Effect_Range_Laser = "laser";     // 镭射范围 增加范围是增大宽度
+const std::string Skill_Effect_Range_Sphere = "sphere";     // 球形范围 计算斜向直径
+const std::string Skill_Effect_Range_Rectangle = "rectangle";     // 矩形范围 3*2
+const std::string Skill_Effect_Range_Global = "global";     // 全局范围
+const std::string Skill_Effect_Range_Random = "random";     // around范围 随机选择单元格

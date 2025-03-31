@@ -1,6 +1,6 @@
 #include "BattleField.h"
 #include "Logger.h"
-
+#include "Timeline.h"
 
 template <typename T>
 void ObjectsManager<T>::Serialize(std::ofstream& ofs) {
@@ -89,9 +89,72 @@ void BattleField::SettlementSkill(int64_t caster_id, int64_t skill_id, int64_t t
 {
 }
 
+void BattleField::CastSkill(int64_t caster_id, int64_t skill_id, uint8_t x, uint8_t y)
+{
+    if (caster_id != 0)
+    {
+        Character* caster = GetCharacter(caster_id);
+        if (caster == nullptr)
+        {
+            // TODO: 错误处理   
+            return;
+        }
+        Skill* skill = caster->GetSkill(skill_id);
+        if (skill == nullptr)
+        {
+            // TODO: 错误处理   
+            return;
+        }
+        QuadGrid* target = map->Get(x, y);
+        if (target == nullptr)
+        {
+            // TODO: 错误处理   
+            return;
+        }
+        if (skill->requireTarget)
+        {
+            if (skill->target_type == 0)
+            {
+
+                if (target->unit == nullptr)
+                {
+                    // TODO: 错误处理   
+                    return;
+                }
+   
+            }
+            else if (skill->target_type == 1)
+            {
+                
+            }
+            else
+            {
+                
+            }
+        }
+        if (!skill->castable)
+        {
+            // TODO: 错误处理   
+            return;
+        }
+        // caster->CastSkill(skill, target);
+    }
+    else
+    {
+        
+    }
+    // Timeline timeline = new Timeline();
+
+}
+
 int64_t BattleField::NextActionableCharacter()
 {
     return 0;
+}
+
+Character *BattleField::GetCharacter(int64_t character_id)
+{
+    return nullptr;
 }
 
 void BattleField::EndTurn()

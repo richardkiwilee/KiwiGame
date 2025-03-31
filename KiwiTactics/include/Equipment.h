@@ -23,10 +23,10 @@ public:
     ~Chest() = default;
 };
 
-class Gloves {  // 手套
+class Glove {  // 手套
 public:
-    Gloves() = default;
-    ~Gloves() = default;
+    Glove() = default;
+    ~Glove() = default;
 };
 
 class Leg {    // 腿部

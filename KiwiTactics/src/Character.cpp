@@ -1,15 +1,6 @@
 #include "Logger.h"
 #include "Character.h"
 
-void Character::attack(Character& target) {
-    OnAttack.triggerEvent();  // 触发攻击事件
-    target.attacked(*this);  // 让目标受到攻击
-}
-
-void Character::attacked(Character& attacker) {
-    OnAttacked.triggerEvent();  // 触发被攻击事件
-}
-
 void Character::startTurn() {
     OnTurnStart.triggerEvent();  // 触发回合开始事件
 }
@@ -52,6 +43,11 @@ void Character::Deserialize(std::ifstream& ifs) {
 CharacterInfo* Character::GetCharacterInfo() {
     CharacterInfo* info = new CharacterInfo();
     return info;
+}
+
+Skill *Character::GetSkill(int64_t id)
+{
+    return nullptr;
 }
 
 int32_t CharacterAttribute::Get()

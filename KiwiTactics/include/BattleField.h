@@ -48,9 +48,9 @@ public:
     void RemoveBuilding(int x, int y);
     void MoveCharacter(int64_t character_id, int x, int y);
     void SettlementSkill(int64_t caster_id, int64_t skill_id, int64_t target_id);
-
+    void CastSkill(int64_t caster_id, int64_t skill_id, uint8_t x, uint8_t y);
     int64_t NextActionableCharacter();
-
+    Character* GetCharacter(int64_t character_id);
     void EndTurn();
     void StartTurn();
 
