@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <cstdint>
 
 // 定义角色阵营
 const std::string Camp_Empty = "";     // 空对象 游戏管理类
