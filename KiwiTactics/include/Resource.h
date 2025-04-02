@@ -104,3 +104,35 @@ const std::string Skill_Effect_Range_Sphere = "sphere";     // 球形范围 计�
 const std::string Skill_Effect_Range_Rectangle = "rectangle";     // 矩形范围 3*2
 const std::string Skill_Effect_Range_Global = "global";     // 全局范围
 const std::string Skill_Effect_Range_Random = "random";     // around范围 随机选择单元格
+
+// 定义单元格类型
+const uint8_t QuadGrid_Entity_Empty = 0;     // 空单元格
+const uint8_t QuadGrid_Entity_Solid = 1;     // 实心固体 用以建筑物的占位符
+const uint8_t QuadGrid_Entity_Passable = 2;     // 通行单元格 用以建筑物的占位符
+const uint8_t QuadGrid_Entity_Wood = 3;     // 木质单元格
+const uint8_t QuadGrid_Entity_Grass = 4;     // 草地单元格 如果单元格在最上层 应用草地视觉效果
+const uint8_t QuadGrid_Entity_Water = 5;     // 水单元格
+const uint8_t QuadGrid_Entity_Sand = 6;      // 沙地单元格
+const uint8_t QuadGrid_Entity_Lava = 7;      // 岩浆
+const uint8_t QuadGrid_Entity_Stone = 8;      // 石头
+const uint8_t QuadGrid_Entity_Obsidian = 9;      // 黑曜石
+const uint8_t QuadGrid_Entity_Muddy = 10;      // 泥泞
+
+// 定义地面效果
+const uint8_t QuadGrid_GroundEffect_None = 0;   // 无地面效果
+const uint8_t QuadGrid_GroundEffect_Fire = 1;   // 燃烧
+const uint8_t QuadGrid_GroundEffect_Ice = 2;   // 冰
+const uint8_t QuadGrid_GroundEffect_Water = 3;   // 水
+const uint8_t QuadGrid_GroundEffect_Muddy = 4;   // 泥泞
+
+// 定义悬浮效果
+const uint8_t QuadGrid_FloatingEffect_None = 0; // 无悬停效果
+const uint8_t QuadGrid_FloatingEffect_Fog = 1; // 雾气
+const uint8_t QuadGrid_FloatingEffect_Dark = 2; // 黑暗
+
+// 定义边缘 如果边缘是一个墙体 其生命值归属于建筑对象
+const uint8_t QuadGrid_Boundary_None = 0;   // 无边缘
+const uint8_t QuadGrid_Boundary_SolidWall = 1;   // 实心墙 不可移动穿过 不可透过视野
+const uint8_t QuadGrid_Boundary_DefenceWall = 2;    // 防御用墙 不可移动穿过 可以透过视野 允许单向的远程攻击
+const uint8_t QuadGrid_Boundary_Ladder = 3;    // 直梯 两个高度差大于2的相邻单元格 如果通过直梯相连 视为可以移动通过
+const uint8_t QuadGrid_Boundary_Fence = 4;    // 栅栏 需要消耗一个动作翻越

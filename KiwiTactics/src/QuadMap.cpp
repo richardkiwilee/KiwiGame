@@ -97,7 +97,7 @@ void QuadGridMap::Serialize(std::ofstream& ofs) const {
                 ofs.write(reinterpret_cast<const char*>(&grid.z), sizeof(grid.z));
                 ofs.write(reinterpret_cast<const char*>(&grid.entity), sizeof(grid.entity));
                 ofs.write(reinterpret_cast<const char*>(&grid.ground_effect), sizeof(grid.ground_effect));
-                ofs.write(reinterpret_cast<const char*>(&grid.fill_effect), sizeof(grid.fill_effect));
+                ofs.write(reinterpret_cast<const char*>(&grid.floating_effect), sizeof(grid.floating_effect));
                 // 注意：不序列化指针，因为它们是运行时状态
             }
         }
@@ -137,7 +137,7 @@ void QuadGridMap::Deserialize(std::ifstream& ifs) {
                 ifs.read(reinterpret_cast<char*>(&grid.z), sizeof(grid.z));
                 ifs.read(reinterpret_cast<char*>(&grid.entity), sizeof(grid.entity));
                 ifs.read(reinterpret_cast<char*>(&grid.ground_effect), sizeof(grid.ground_effect));
-                ifs.read(reinterpret_cast<char*>(&grid.fill_effect), sizeof(grid.fill_effect));
+                ifs.read(reinterpret_cast<char*>(&grid.floating_effect), sizeof(grid.floating_effect));
                 // 指针初始化为nullptr
                 grid.unit = nullptr;
                 grid.building = nullptr;
@@ -156,7 +156,7 @@ void QuadGridMap::_randomization() {
                 // 这里可以根据需要设置一些随机的地形或效果
                 grid.entity = rand() % 3;  // 随机设置单元格类型
                 grid.ground_effect = rand() % 2;  // 随机设置地面效果
-                grid.fill_effect = rand() % 2;  // 随机设置填充效果
+                grid.floating_effect = rand() % 2;  // 随机设置填充效果
             }
         }
     }
