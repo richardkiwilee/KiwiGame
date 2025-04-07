@@ -103,7 +103,9 @@ const std::string Skill_Effect_Range_Laser = "laser";     // 镭射范围 增加
 const std::string Skill_Effect_Range_Sphere = "sphere";     // 球形范围 计算斜向直径
 const std::string Skill_Effect_Range_Rectangle = "rectangle";     // 矩形范围 3*2
 const std::string Skill_Effect_Range_Global = "global";     // 全局范围
-const std::string Skill_Effect_Range_Random = "random";     // around范围 随机选择单元格
+const std::string Skill_Effect_Range_Random_Around = "random_around";     // around范围 随机选择单元格
+const std::string Skill_Effect_Range_Random_Sphere = "random_sphere";     // 球形范围 计算斜向直径 随机选择单元格
+const std::string Skill_Effect_Range_Random_Global = "random_global";     // 全局范围 随机选择单元格
 
 // 定义单元格类型
 const uint8_t QuadGrid_Entity_Empty = 0;     // 空单元格
@@ -136,3 +138,37 @@ const uint8_t QuadGrid_Boundary_SolidWall = 1;   // 实心墙 不可移动穿过
 const uint8_t QuadGrid_Boundary_DefenceWall = 2;    // 防御用墙 不可移动穿过 可以透过视野 允许单向的远程攻击
 const uint8_t QuadGrid_Boundary_Ladder = 3;    // 直梯 两个高度差大于2的相邻单元格 如果通过直梯相连 视为可以移动通过
 const uint8_t QuadGrid_Boundary_Fence = 4;    // 栅栏 需要消耗一个动作翻越
+
+// Buff触发类型
+const std::string Buff_Trigger_OnTurnStart = "on_turn_start";       // 回合开始
+const std::string Buff_Trigger_OnTurnEnd = "on_turn_end";           // 回合结束
+const std::string Buff_Trigger_OnAttack = "on_attack";              // 攻击
+const std::string Buff_Trigger_OnTakeDamage = "on_take_damage";     // 受到伤害
+const std::string Buff_Trigger_OnDeath = "on_death";                // 死亡
+const std::string Buff_Trigger_Resident = "resident";               // 常驻
+
+// Buff叠加类型
+const std::string Buff_Type_Stack = "stack";     // 叠加
+const std::string Buff_Type_Unique = "unique";     // 不可叠加的唯一性
+
+// Buff Reduce Type
+const std::string Buff_Reduce_Type_Half = "half";     // 减半
+const std::string Buff_Reduce_Type_Full = "full";     // 减全
+const std::string Buff_Reduce_Type_Once = "once";     // 减一次
+const std::string Buff_Reduce_Type_None = "none";     // 不减
+
+// Buff Target Type
+const std::string Buff_Target_Type_Self = "self";     // 本身
+const std::string Buff_Target_Type_Enemy = "enemy";     // 敌人
+const std::string Buff_Target_Type_Friend = "friend";     // 友军 不包括自己
+const std::string Buff_Target_Type_Friend_Self = "friend_self";     // 友军包括自己
+const std::string Buff_Target_Type_All = "all";     // 所有
+
+// Buff Effect Range
+const std::string Buff_Effect_Range_Self = "self";     // 自身
+const std::string Buff_Effect_Range_Around = "around";     // 围绕目标 9格
+const std::string Buff_Effect_Range_Sphere = "sphere";     // 球形范围 计算斜向直径
+const std::string Buff_Effect_Range_Global = "global";     // 全局范围
+const std::string Buff_Effect_Range_Random_Around = "random_around";     // around范围 随机选择单元格
+const std::string Buff_Effect_Range_Random_Sphere = "random_sphere";     // 球形范围 计算斜向直径 随机选择单元格
+const std::string Buff_Effect_Range_Random_Global = "random_global";     // 全局范围 随机选择单元格
