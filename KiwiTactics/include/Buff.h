@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <map>
 
 
 struct BuffInfo
@@ -34,11 +35,23 @@ class Buff
 public:
     Buff() = default;
     ~Buff() = default;
-    int64_t id;
-    bool visible;
-    int8_t BuffType;
-    double value;
+    int64_t id = 0;
+    std::string name = "";
+    bool visible = true;
+    std::string BuffType = "";   // stack unique
+    std::string ReduceType = ""; // half full once none
+    std::string TargetType = ""; // self enemy friend friend_self all
+    std::string EffectRange = ""; // self around sphere global random_around random_sphere random_global
+    uint16_t max_value = 0xffff;    // max=0xffff
+    uint16_t value = 0;
     int64_t remainTurn;
+    std::vector<std::map<std::string, int64_t>> nodes;
     int funcAddress;
-
+    void* OnTurnStart = nullptr;
+    void* OnTurnEnd = nullptr;
+    void* OnAttack = nullptr;
+    void* OnTakeDamage = nullptr;
+    void* OnDeath = nullptr;
+    void* OnEnable = nullptr;
+    void* OnDisable = nullptr;
 };
