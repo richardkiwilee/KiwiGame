@@ -25,6 +25,7 @@ include_directories(${PYTHON_INCLUDE_DIR})
 include_directories(${PYBIND11_INCLUDE_DIR})
 include_directories("${SOL2_DIR}/include")
 include_directories("${LUA_DIR}/include")
+include_directories(${TINYXML2_DIR})
 include_directories(${KiwiTactics_INCLUDE_DIR})
 
 # 这地方让根目录可以被系统include找到
