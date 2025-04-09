@@ -9,12 +9,13 @@ endif()
 # 递归搜索源文件
 file(GLOB_RECURSE SRC_FILES 
     main.cpp 
+    tinyxml2/*.*
     version.h 
     data/*.*
     endian/*.*
     plugin/*.*
     include/*.h
-    src/*.*
+    src/*.* 
 ) 
 
 # 为源文件生成源组
@@ -25,8 +26,9 @@ include_directories(${PYTHON_INCLUDE_DIR})
 include_directories(${PYBIND11_INCLUDE_DIR})
 include_directories("${SOL2_DIR}/include")
 include_directories("${LUA_DIR}/include")
-include_directories(${TINYXML2_DIR})
 include_directories(${KiwiTactics_INCLUDE_DIR})
+include_directories(${TINYXML2_DIR})
+
 
 # 这地方让根目录可以被系统include找到
 include_directories(SYSTEM "${CMAKE_SOURCE_DIR}")

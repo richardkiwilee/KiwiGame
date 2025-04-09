@@ -12,7 +12,7 @@ set(PYTHON_INCLUDE_DIR "D:/Python36/include")
 set(PYBIND11_INCLUDE_DIR "D:/Python36/Lib/site-packages/pybind11/include")
 set(LUA_DIR "${CMAKE_SOURCE_DIR}/lua-5.4.2")
 set(SOL2_DIR "${CMAKE_SOURCE_DIR}/sol2-3.3.0")
-set(TINYXML2_DIR "${CMAKE_SOURCE_DIR}/tinyxml2")
+set(TINYXML2_DIR "${CMAKE_SOURCE_DIR}/KiwiTactics/tinyxml2")
 set(KiwiTactics_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/KiwiTactics/include")
 
 # 启用 C++17

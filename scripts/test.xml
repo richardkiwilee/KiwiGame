@@ -1,0 +1,27 @@
+<buff name="buff1" >
+    <condition name="check_health" min_health="50">
+        <action name="heal" amount="30" target="self"/>
+    </condition>
+    <sequence name="attack_sequence">
+        <action name="move" target="enemy" distance="2"/>
+        <action name="attack" damage="20" target="enemy"/>
+    </sequence>
+</buff>
+<skill name="fireball" >
+    <condition name="check_health" min_health="50">
+        <action name="heal" amount="30" target="self"/>
+    </condition>
+    <sequence name="attack_sequence">
+        <action name="move" target="enemy" distance="2"/>
+        <action name="attack" damage="20" target="enemy"/>
+    </sequence>
+</skill>
+<building name="fireball" >
+    <condition name="check_health" min_health="50">
+        <action name="heal" amount="30" target="self"/>
+    </condition>
+    <sequence name="attack_sequence">
+        <action name="move" target="enemy" distance="2"/>
+        <action name="attack" damage="20" target="enemy"/>
+    </sequence>
+</building>
